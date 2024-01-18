@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ADM - Detalhe da Postagem</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link rel="stylesheet" href="/css/estiloDash.css">
+
+	<style>
+		iframe,
+		#media {
+			margin-left: auto;
+			margin-right: auto;
+			display: inline;
+			inline-size: -webkit-fill-available;
+		}
+	</style>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var dataConvertElements = document.querySelectorAll('.dataConvert');
+
+			dataConvertElements.forEach(function (element) {
+				var dataSQL = element.textContent;
+				var partesData = dataSQL.split('-');
+				var dataFormatada = partesData[2] + '/' + partesData[1] + '/'
+					+ partesData[0];
+				element.textContent = dataFormatada;
+			});
+		});
+	</script>
+
+</head>
+
+<body>
+	<div class="container-fluid overflow-hidden">
+		<header class="container">
+			<nav class="navbar navbar-expand-lg fixed-top navbar-dark shadow-sm" id="menu">
+				<div class="container-fluid">
+					<a th:href="@{/admin/index}" class="navbar-brand"> <span class="mx-3">Emprega + </span>Dashboard de
+						ADM </a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+						data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse flex-row-reverse" id="navbarContent">
+						<ul class="navbar-nav">
+							<li class="nav-item"><a th:href="@{/admin/index}" class="nav-link">
+									<i class="fas fa-home"></i> Home
+								</a></li>
+
+							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i class="fas fa-users"></i><span
+										class="ms-1 d-sm-inline">Usuários</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" th:href="@{/admin/usuario/listar}">Listar</a></li>
+									<li><a class="dropdown-item" href="./CadastroUsuario.jsp">Cadastrar</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown"><a href="#" class="nav-link  active dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i
+										class="fs-5 fas fa-icons"></i><span class="ms-1 d-sm-inline">Postagens</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" href="/Empreenda-Mais/ListarPostagensAdmin">Listar</a>
+									</li>
+									<li><a class="dropdown-item" href="./CadastroPostagem.jsp">Cadastrar</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i
+										class="fs-5 fas fa-book-open"></i><span class="ms-1 d-sm-inline">Cursos</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" href="#">Listar</a></li>
+									<li><a class="dropdown-item" href="#">Cadastrar</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i
+										class="fs-5 fas fa-pencil-alt"></i><span
+										class="ms-1 d-sm-inline">Inscrições</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" href="#">Listar</a></li>
+								</ul>
+							</li>
+
+							<li class="nav-item"><a th:href="@{/}" class="nav-link" target="_blank"> <i
+										class="fas fa-external-link-alt"></i>
+									Ver o Sistema Principal
+								</a></li>
+
+							<li class="nav-item"><a th:href="@{/logout}" class="nav-link"> <i
+										class="fas fa-sign-out-alt"></i> Sair
+								</a></li>
+
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<div class="container-fluid mb-3 conteudo">
+			<main class="col pt-2 pb-4">
+				<h1>Dados da Postagem</h1>
+				<hr>
+				<div class="col-lg-8 mx-auto">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-0">ID da Postagem</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0" th:text="${postagem.id}"></p>
+								</div>
+							</div>
+
+							<hr>
+							<div class="row gx-2">
+								<div class="col-sm-3 gx-2">
+									<p class="mb-0">Usuário</p>
+								</div>
+								<div class="col-sm-9 gx-2">
+									<a th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}" id="nomeUsuario"
+										target="_blank" data-bs-toggle="tooltip" data-bs-placement="top"
+										title="Ver Perfil" th:text="${postagem.perfil.usuario.nome}"></a>
+								</div>
+								<div class="col-sm-9"></div>
+							</div>
+							<hr>
+
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-0">Título e Corpo da Postagem</p>
+								</div>
+								<div class="col-sm-9">
+									<label for="inputTituloPostagem" class="form-label fs-4"
+										th:text="${postagem.titulo}"></label>
+									<div class="mb-3">
+										<p th:utext="${postagem.corpo}"></p>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-0">Mídia Externa</p>
+								</div>
+								<div class="col-sm-9">
+									<div class="mb-3 d-flex justify-content-start">
+										<th:block
+											th:if="${postagem.mediaUrl != null and not #strings.isEmpty(postagem.mediaUrl)}">
+											<img th:src="${postagem.mediaUrl}" class="img-fluid w-50 mx-50"
+												alt="Imagem Post">
+										</th:block>
+										<th:block
+											th:unless="${postagem.mediaUrl != null and not #strings.isEmpty(postagem.mediaUrl)}">
+											<p>Sem mídia externa disponível.</p>
+										</th:block>
+									</div>
+
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-0">Data da Postagem</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0 dataConvert" th:text="${postagem.dataPostagem}"></p>
+								</div>
+							</div>
+							<hr>
+
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-0">Categoria</p>
+								</div>
+								<div class="col-sm-9">
+									<span class="px-2 py-1 bg-success rounded text-white"
+										th:text="${postagem.categoria}"></span>
+								</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-center my-3">
+					<a th:href="@{/admin/postagem/lista}" class="btn btn-lg btn-success"> Voltar </a>
+				</div>
+			</main>
+
+
+		</div>
+	</div>
+	<footer class="row container-fluid footer mt-3">
+		<div class="col col-md-8">&reg; Empreenda + - 2023</div>
+		<div class="col col-6 col-md-4 d-flex justify-content-end">Versão
+			- 3.0 (Spring)</div>
+	</footer>
+
+
+</body>
+
+</html>

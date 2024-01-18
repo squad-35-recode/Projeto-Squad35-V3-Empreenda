@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Empreenda + Contato </title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link rel="stylesheet" href="./css/style.css">
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+	<script>
+$(document).ready(function() {
+    $('input[name="retornoContato"]').on('change', function() {
+        var escolha = $('input[name="retornoContato"]:checked').val();
+
+        var traducao = traduzPreferencia(escolha);
+
+    });
+
+    function traduzPreferencia(escolha) {
+        switch (escolha) {
+            case "emailRetorno":
+                return "Por E-mail";
+            case "telRetorno":
+                return "Por Telefone";
+            case "whatsRetorno":
+                return "Por WhatsApp";
+            default:
+                return "Preferência não reconhecida";
+        }
+    }
+});
+</script>
+
+</head>
+
+<body>
+
+	<!-- Menu Principal-->
+	<header class="container">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/index}">Empreenda <span class="tituloMais">+</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link" aria-current="page" th:href="@{/index}"> <i
+								class="fas fa-home"></i>
+							Página Principal
+						</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos
+						</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
+							Cadastrar</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
+							Entrar</a></li>
+					<li sec:authorize="!isAuthenticated()"><a class="nav-link active" th:href="@{/ajuda}">Ajuda</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
+								class="fas fa-envelope"></i> Mensagens
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
+							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+							href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Perfil </a>
+						<ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#"><i class="fas fa-user-circle fs-4 px-1"></i>
+									<span th:text="${#authentication.name}">
+									</span></a></li>
+							<li><a class="dropdown-item" th:href="@{/perfil}"><button class="btn border"
+										id="btnPerfil">Ver
+										Perfil</button></a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#">Configurações</a></li>
+							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+						</ul>
+					</li>
+					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							Dashboard ADM
+						</a></li>
+					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardColab/Dashboard.jsp"> <i class="fas fa-user"></i> Dashboard
+							Colaborador
+						</a></li>
+				</ul>
+				<form class="d-flex">
+					<input class="form-control me-2" type="search" placeholder="Pesquisar Assunto" aria-label="Search">
+					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+	</header>
+	<main class="container-fluid mb-6" style="margin-top: 100px!important;">
+		<div th:if="${param.msgSuccess}">
+						<div class="alert alert-info alert-dismissible fade show mt-2" role="alert">
+							<i class="fas fa-check-circle fs-3"></i> Formulário enviado com sucesso, por favor aguarde nosso retorno. Obrigado! 
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					</div>
+		<section class="container mb-4">
+			<h1 class="text-primary mb-4 text-center">Encontre respostas rapidamente</h1>
+			<div class="row row-cols-auto justify-content-center">
+				<div class="col mb-4">
+					<a href="#" class="btn btn-light rounded border-success p-5">
+						<span class="position-top text-primary text-center fs-5">Perguntas Frequentes</span>
+					</a>
+				</div>
+				<div class="col mb-4">
+					<a href="#" class="btn btn-light rounded border-success p-5">
+						<span class="position-top text-primary text-center fs-5">Ajuda com Cursos</span>
+					</a>
+				</div>
+				<div class="col mb-4">
+					<a href="#" class="btn btn-light rounded border-success p-5">
+						<span class="position-top text-primary text-center fs-5">Ajuda com a Comunidade</span>
+					</a>
+				</div>
+
+			</div>
+		</section>
+
+		<h2 class="text-muted text-center mb-4">Não encontrou a resposta acima? Entre em contato conosco <i
+				class="fas fa-level-down-alt"></i></h2>
+		<section class="container rounded">
+			<form th:action="@{/ajuda/save}" method="post" class="form-group p-2">
+				<div class="mb-3">
+					<label for="inputContatoEmail" class="form-label">Insira seu e-mail (*): </label>
+					<input type="email" class="form-control" name="email" id="inputContatoEmail" placeholder="nome@exemplo.com"
+						required>
+				</div>
+				<div class="mb-3">
+					<label for="inputContatoNome" class="form-label">Insira seu nome (*): </label>
+					<input type="text" name="nome" class="form-control" id="inputContatoNome" placeholder="Nome e Sobrenome"
+						required>
+				</div>
+				<div class="mb-3">
+					<label for="inputContatoTel" class="form-label">Insira seu telefone (*): </label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="telefone" aria-label="Número de Telefone" id="telefone"
+							placeholder="(**)*****-****" required>
+						<div class="input-group-text">
+							<span class="text-muted px-2">WhatsApp? </span>
+							<input class="form-check-input mt-0" type="checkbox" name="wapp" aria-label="WhatsApp">
+						</div>
+					</div>
+				</div>
+				<div class="mb-3">
+					<label for="inputContatoTexto" class="form-label">Nos conte como podemos ajudar (*): </label>
+					<textarea class="form-control" id="inputContatoTexto" name="texto" rows="3" required></textarea>
+				</div>
+
+				<div class="mb-3 mt-5">
+					<div class="form-check mt-4">
+						<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+						<label class="form-check-label" for="defaultCheck1">
+							Desejo receber informações e promoções por e-mail
+						</label>
+					</div>
+				</div>
+				<div class="mb-3 mt-4">
+					<button type="submit" class="btn btn-primary text-white px-4" name="enviarFormulario">
+						Enviar
+					</button>
+				</div>
+
+			</form>
+			<span class="text-muted"><span class="fs-5">*</span> Campos Obrigatórios</span>
+		</section>
+
+		<hr class="mt-5 ">
+	</main>
+
+	<footer class="mt-5">
+		<section class="container-fluid my-4">
+			<div class="row">
+				<div class="col mb-4">
+					<h5>Empreenda +</h5>
+					<p><span class="fw-semibold">Endereço: </span>Avenida Recode, 100 - São Paulo, SP. CEP:
+						08123-456</p>
+					<p><span class="fw-semibold">Tel.:</span> (11)4321-1234 / (11)91234-5678</p>
+					<p><span class="fw-semibold">E-mail: </span> empreenda-mais@email.com.br</p>
+				</div>
+
+				<div class="col mb-4">
+					<h5>Sobre</h5>
+					<p><a href="#" class="linksFooter fw-semibold">Sobre nós</a></p>
+					<p><a href="#" class="linksFooter fw-semibold">Política de Privacidade</a></p>
+					<p><a href="#" class="linksFooter fw-semibold">Termos e Condições</a></p>
+				</div>
+
+				<div class="col mb-4">
+					<h4>Siga-nos</h4>
+					<div class="fs-2">
+
+						<i class="fab fa-instagram redeSocial mx-1"></i>
+						<i class="fab fa-facebook-f redeSocial mx-1"></i>
+
+						<i class="fab fa-twitter redeSocial mx-1"></i>
+						<i class="fab fa-tiktok redeSocial mx-1"></i>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</footer>
+	
+</body>
+<script src="./script/plugins/jquery-mask/jquery.mask.min.js"></script>
+	<script src="./script/plugins/select2/js/select2.full.min.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+
+			$('#telefone').mask('(00) 00000-0000', {
+				placeholder: "(__) _____-____"
+			});
+
+		});
+	</script>
+
+</html>

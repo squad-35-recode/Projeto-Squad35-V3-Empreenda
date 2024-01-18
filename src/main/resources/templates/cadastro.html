@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Link CSS Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+	<!-- Link JavaScript Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+
+	<!-- Link Font-Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link rel="stylesheet" href="./css/style.css">
+
+	<script async src="./script/script.js"></script>
+
+	<title>Cadastro</title>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// Função para obter os parâmetros da URL
+			function obterParametrosUrl() {
+				var params = {};
+				window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (
+					str, key, value) {
+					params[key] = value;
+				});
+				return params;
+			}
+
+			var parametros = obterParametrosUrl();
+			if (parametros.colab === 'true') {
+				var aviso = document.getElementById('avisoPerfil2');
+				aviso.style.display = 'block';
+				aviso.addEventListener('click', function () {
+					aviso.style.display = 'none';
+					var urlSemParametro = window.location.href.split('?')[0];
+					window.history
+						.replaceState({}, document.title, urlSemParametro);
+				});
+
+				// Define um temporizador para esconder o aviso após 5 segundos (5000 milissegundos)
+				setTimeout(function () {
+					aviso.style.display = 'none';
+					var urlSemParametro = window.location.href.split('?')[0];
+					window.history
+						.replaceState({}, document.title, urlSemParametro);
+				}, 10000);
+			}
+		});
+
+
+	</script>
+</head>
+
+<body>
+	<!-- Menu Principal -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/index}">Empreenda <span class="tituloMais">+</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" aria-current="page" th:href="@{/index}"> <i class="fas fa-home"></i> Página
+							Principal</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" th:href="@{/register}"> Cadastrar</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/login}"> Entrar</a>
+					</li>
+					<li><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
+				</ul>
+				<form class="d-flex">
+					<input class="form-control me-2" type="search" placeholder="Pesquisar Assunto" aria-label="Search">
+					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<main>
+
+		<section class="h-100 h-custom">
+			<div class="container py-5 h-100">
+				<div class="row d-flex justify-content-center align-items-center h-100">
+					<div class="col-lg-8 col-xl-6">
+						<div class="card rounded-3">
+							<img src="./image/empreendedor.jpg" class="w-100"
+								style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
+								alt="Sample photo">
+							<div class="card-body p-4 p-md-5">
+								<div th:if="${param.success}">
+									<div class="alert alert-info alert-dismissible fade show" role="alert">
+										<i class="fas fa-info-circle fs-4 mx-1"></i> Cadastro efetuado com sucesso!
+										<button type="button" class="btn-close" data-bs-dismiss="alert"
+											aria-label="Close"></button>
+									</div>
+								</div>
+
+								<div th:if="${param.successColab}">
+									<div class="alert alert-info alert-dismissible fade show" role="alert">
+										<i class="fas fa-info-circle fs-4 mx-1"></i> Perfeito, pedido de colaboração
+										feito com sucesso! Por favor, aguarde nossa
+										resposta por e-mail. Obrigado pelo registro.
+										<button type="button" class="btn-close" data-bs-dismiss="alert"
+											aria-label="Close"></button>
+									</div>
+								</div>
+								<h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-center">Cadastre-se</h3>
+
+								<form class="px-md-2 requires-validation" novalidate id="formCadastro"
+									th:action="@{/register/save}" th:object="${usuario}" method="post">
+
+									<div class="form-outline mb-4">
+
+										<input type="text" id="nomeCadastro" name="nome" th:field="*{nome}"
+											class="form-control" required>
+										<div class="invalid-feedback">Nome não pode ser vazio</div>
+										<label class="form-label" for="nomeCadastro">Insira seu nome completo
+											(*)</label>
+										<p th:errors="*{nome}" class="text-danger" th:if="${#fields.hasErrors('nome')}">
+										</p>
+									</div>
+
+
+									<div class="row">
+										<div class="col mb-4">
+
+											<div class="form-outline">
+												<input type="email" class="form-control" name="email"
+													th:field="*{email}" required>
+												<div class="invalid-feedback">Formato de e-mail não reconhecido ou vazio
+												</div>
+												<label for="emailCadastro" class="form-label">Insira seu E-mail
+													(*)</label>
+
+											</div>
+										</div>
+										<p th:errors="*{email}" class="text-danger"
+											th:if="${#fields.hasErrors('email')}"></p>
+									</div>
+
+									<div class="row">
+										<div class="text-danger text-center mb-1 error" id="senhasInco">
+
+										</div>
+										<div class="col-md-6 mb-4">
+											<div class="form-outline">
+												<input type="password" class="form-control" id="senha1Cadastro"
+													required>
+												<label for="senha1Cadastro" class="form-label">Insira uma Senha
+													(*)</label>
+											</div>
+										</div>
+										<div class="col-md-6 mb-4">
+											<div class="form-outline">
+												<input type="password" class="form-control" name="senha"
+													th:field="*{senha}" id="senha2Cadastro" required>
+												<label for="senha2Cadastro" class="form-label">Re-insira a senha
+													(*)</label>
+											</div>
+
+										</div>
+										<p th:errors="*{senha}" class="text-danger"
+											th:if="${#fields.hasErrors('senha')}"></p>
+									</div>
+									<span class="text-muted">Mais dados poderão ser adicionados na aba do seu perfil,
+										ok?</span>
+
+									<div class="form-check my-3">
+										<input class="form-check-input me-2" type="checkbox" value="" id="checkPolPri"
+											required>
+										<label class="form-check-label" for="checkPolPri">
+											Concordo com a <a href="#!" class="text-body"><u>Política de
+													Privacidade</u></a>
+										</label>
+										<div class="invalid-feedback">
+											Por favor, confirme a opção de política de privacidade
+										</div>
+									</div>
+									<div class="my-4 text-center">
+										<button type="submit" class="btn btn-success btn-lg mb-1 mx-3"
+											id="submitBtn">Criar Conta</button>
+										<button type="button" class="btn btn-light btn-lg"
+											onclick="limparCampos()">Limpar Campos</button>
+									</div>
+									<div>
+										<span>Já tem uma conta? </span> <a href="login.html">Faça Login</a>
+									</div>
+								</form>
+								<form th:action="@{/register/colab/save}" th:object="${usuario}" method="post">
+									<input type="hidden" name="origem" value="/cadastro">
+									<div class="mt-5 border rounded p-3">
+										<p>É educador e quer um lugar para divulgar seus cursos? Envie seus dados que
+											entramos em contato!</p>
+
+										<div class="row">
+											<div class="col mb-4">
+
+												<div class="form-outline">
+													<label for="nomeColab" class="form-label text-muted">Insira seu
+														nome ou de sua instituição</label>
+													<p th:errors="*{nome}" class="text-danger"
+														th:if="${#fields.hasErrors('nome')}"></p>
+													<input type="text" th:field="*{nome}" class="form-control"
+														id="nomeColab" name="nome">
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col mb-4">
+												<div class="form-outline">
+													<label for="emailColab" class="form-label text-muted">Insira um
+														e-mail</label>
+													<p th:errors="*{email}" class="text-danger"
+														th:if="${#fields.hasErrors('email')}"></p>
+													<input type="email" class="form-control" name="email"
+														id="emailColab" th:field="*{email}">
+												</div>
+											</div>
+										</div>
+										<input type="hidden" th:value="12345" name="senha">
+										<div>
+											<button type="submit"
+												class="btn btn-info text-white btn-lg mb-1 mx-3">Enviar</button>
+										</div>
+
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="container d-flex justify-content-around">
+			<div class="my-3 border rounded p-3 bg-white d-flex w-50 h-50">
+				<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>
+				<div id="bannerDivulgação">
+					<img src="./image/ads-itau.jpg" alt="" class="img-fluid">
+				</div>
+			</div>
+		</section>
+	</main>
+
+</body>
+
+</html>

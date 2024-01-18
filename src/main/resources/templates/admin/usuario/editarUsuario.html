@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ADM - Atualizar Cliente</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link rel="stylesheet" href="/css/estiloDash.css">
+
+	<script src="/script/plugins/jquery.js"></script>
+	<script src="/script/plugins/jquery-mask/jquery.mask.min.js"></script>
+	<script src="/script/plugins/select2/js/select2.full.min.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			$('#documentoCliente').mask('000.000.000-00', {
+				reverse: true,
+				placeholder: "___.___.___-__"
+			});
+
+			$('#telefone1Usuario').mask('(00) 0000-0000', {
+				placeholder: "(__) ____-____"
+			});
+
+			$('#telefone2Usuario').mask('(00) 00000-0000', {
+				placeholder: "(__) _____-____"
+			});
+
+			$('#cepCliente').mask('00000-000', {
+				placeholder: "CEP: _____-___"
+			});
+		});
+
+		document.addEventListener("DOMContentLoaded", function () {
+			var dataConvertElements = document.querySelectorAll('.dataConvert');
+
+			dataConvertElements.forEach(function (element) {
+				var dataSQL = element.textContent;
+				var partesData = dataSQL.split('-');
+				var dataFormatada = partesData[2] + '/' + partesData[1] + '/' + partesData[0];
+				element.textContent = dataFormatada;
+			});
+		});
+
+	</script>
+
+
+</head>
+
+<body>
+
+	<div class="container-fluid overflow-hidden">
+		<header class="container">
+			<nav class="navbar navbar-expand-lg fixed-top navbar-dark shadow-sm" id="menu">
+				<div class="container-fluid">
+					<a th:href="@{/admin/index}" class="navbar-brand"> <span class="mx-3">Emprega + </span>Dashboard de
+						ADM </a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+						data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse flex-row-reverse" id="navbarContent">
+						<ul class="navbar-nav">
+							<li class="nav-item"><a th:href="@{/admin/index}" class="nav-link">
+									<i class="fas fa-home"></i> Home
+								</a></li>
+
+							<li class="dropdown"><a href="#" class="nav-link active dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i class="fas fa-users"></i><span
+										class="ms-1 d-sm-inline">Usuários</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" th:href="@{/admin/usuario/listar}">Listar</a></li>
+									<li><a class="dropdown-item" href="./CadastroUsuario.jsp">Cadastrar</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i
+										class="fs-5 fas fa-icons"></i><span class="ms-1 d-sm-inline">Postagens</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" href="/Empreenda-Mais/ListarPostagensAdmin">Listar</a>
+									</li>
+									<li><a class="dropdown-item" href="./CadastroPostagem.jsp">Cadastrar</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i
+										class="fs-5 fas fa-book-open"></i><span class="ms-1 d-sm-inline">Cursos</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" href="#">Listar</a></li>
+									<li><a class="dropdown-item" href="#">Cadastrar</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle" id="dropdown"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i
+										class="fs-5 fas fa-pencil-alt"></i><span
+										class="ms-1 d-sm-inline">Inscrições</span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+									aria-labelledby="dropdown">
+									<li><a class="dropdown-item" href="#">Listar</a></li>
+								</ul>
+							</li>
+
+							<li class="nav-item"><a th:href="@{/}" class="nav-link" target="_blank"> <i
+										class="fas fa-external-link-alt"></i>
+									Ver o Sistema Principal
+								</a></li>
+
+							<li class="nav-item"><a th:href="@{/logout}" class="nav-link"> <i
+										class="fas fa-sign-out-alt"></i> Sair
+								</a></li>
+
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<div class="container-fluid conteudo mb-6">
+			<main class="container-fluid mb-6">
+				<section class="vh-75 mt-5">
+					<div class="container w-100 h-100" style="
+    padding-bottom: 50px;">
+						<div class="row d-flex justify-content-center align-items-center h-100">
+							<div class="col-lg-12 col-xl-11">
+								<div class="card text-black" style="border-radius: 25px;">
+									<div class="card-body p-md-5">
+										<div class="row justify-content-center">
+											<div th:if="${param.editSuccess}">
+												<div class="alert alert-warning alert-dismissible fade show"
+													role="alert">
+													<i class="fas fa-check-circle fs-3"></i> Edição efetuada com
+													sucesso!
+													<button type="button" class="btn-close" data-bs-dismiss="alert"
+														aria-label="Close"></button>
+												</div>
+											</div>
+											<div>
+												<form class="mx-1 mx-md-4" th:action="@{/admin/usuario/editar/perfil}"
+													id="formPerfil" method="post">
+													<h1 class="text-center">Atualizar Dados</h1>
+													<p class="text-center h1 fw-bold mb-5 mt-4">
+														<span style="color: #8AA6A3 !important;"
+															th:text="${usuario.nome}">
+														</span>
+													</p>
+
+
+
+													<input th:value="${usuario.id}" name="usuarioId" hidden />
+													<input th:value="${perfil.id}" name="perfilId" hidden />
+
+													<div
+														class="d-flex flex-row row gx-2 flex-wrap align-items-center mb-4">
+														<div class="form-outline flex-md-wrap flex-fill mb-0 w-50">
+															<label class="form-label fs-5"
+																for="nomeUsuario">Nome</label>
+															<input type="text" id="nomeUsuario" class="form-control"
+																name="nome" th:value="${usuario.nome}" required />
+														</div>
+														<div class="form-outline flex-md-wrap flex-fill w-50 mb-0">
+															<label class="form-label fs-5"
+																for="emailUsuario">E-mail</label>
+															<input type="text" id="emailUsuario" class="form-control"
+																name="email" th:value="${usuario.email}" readonly />
+														</div>
+													</div>
+
+													<div
+														class="d-flex flex-row row gx-2 flex-wrap align-items-center mb-4">
+														<div class="form-outline col-auto flex-fill mb-2">
+															<label class="form-label fs-5"
+																for="ocupacaoUsuario">Ocupação
+																e/ou Profissão</label> <input type="text"
+																id="ocupacaoUsuario" class="form-control "
+																name="ocupacao" th:value="${perfil.ocupacao}"
+																placeholder="Ocupação" />
+														</div>
+													</div>
+													<div class="d-flex flex-row align-items-center mb-4">
+														<div class="form-outline flex-fill mb-0">
+															<label class="form-label fs-5"
+																for="logradouroUsuario">Endereço:
+															</label> <input type="text" id="logradouroUsuario"
+																class="form-control" name="logradouro"
+																placeholder="Logradouro"
+																th:value="${endereco.logradouro}" />
+
+															<div class="d-flex flex-row align-items-center my-2">
+																<input type="text" id="cepCliente"
+																	class="form-control w-25" name="cep"
+																	th:value="${endereco.cep}" placeholder="CEP" />
+																<input type="text" id="cidadeUsuario"
+																	class="form-control w-50 mx-2" name="cidade"
+																	th:value="${endereco.cidade}"
+																	placeholder="Cidade" />
+																<select id="estado"
+																	class="form-control form-select w-25" name="uf">
+																	<option th:value="${endereco.uf}" disabled selected>
+																		UF</option>
+																	<option value="AC">Acre</option>
+																	<option value="AL">Alagoas</option>
+																	<option value="AP">Amapá</option>
+																	<option value="AM">Amazonas</option>
+																	<option value="BA">Bahia</option>
+																	<option value="CE">Ceará</option>
+																	<option value="DF">Distrito Federal</option>
+																	<option value="ES">Espírito Santo</option>
+																	<option value="GO">Goiás</option>
+																	<option value="MA">Maranhão</option>
+																	<option value="MT">Mato Grosso</option>
+																	<option value="MS">Mato Grosso do Sul</option>
+																	<option value="MG">Minas Gerais</option>
+																	<option value="PA">Pará</option>
+																	<option value="PB">Paraíba</option>
+																	<option value="PR">Paraná</option>
+																	<option value="PE">Pernambuco</option>
+																	<option value="PI">Piauí</option>
+																	<option value="RJ">Rio de Janeiro</option>
+																	<option value="RN">Rio Grande do Norte</option>
+																	<option value="RS">Rio Grande do Sul</option>
+																	<option value="RO">Rondônia</option>
+																	<option value="RR">Roraima</option>
+																	<option value="SC">Santa Catarina</option>
+																	<option value="SP">São Paulo</option>
+																	<option value="SE">Sergipe</option>
+																	<option value="TO">Tocantins</option>
+																	<option value="EX">Estrangeiro</option>
+																</select>
+															</div>
+														</div>
+													</div>
+
+													<div class="d-flex flex-row flex-wrap align-items-center mb-4">
+														<div class="form-outline flex-fill mb-0 me-2">
+															<label class="form-label fs-5"
+																for="telefone1Usuario">Telefone
+																1</label> <input type="text" id="telefone1Usuario"
+																class="form-control" name="telefone1"
+																th:value="${perfil.telefone1}"
+																placeholder="(**) ****-****" />
+														</div>
+														<div class="form-outline flex-fill mb-0">
+															<label class="form-label fs-5"
+																for="telefone2Usuario">Telefone
+																2</label> <input type="text" id="telefone2Usuario"
+																class="form-control" name="telefone2"
+																th:value="${perfil.telefone2}"
+																placeholder="(**) *****-****" />
+														</div>
+													</div>
+
+													<div
+														class="d-flex flex-row flex-wrap border p-2 rounded align-items-center mb-2">
+														<div class=" col form-outline flex-fill mb-2 me-2">
+															<label class="form-label fs-5"
+																for="interesses">Interesses</label>
+															<input type="text" id="interesses" class="form-control mb-1"
+																name="interesse1" th:value="${adicionais.interesse1}"
+																placeholder="Interesse 1" />
+															<input type="text" class="form-control mb-1"
+																name="interesse2" placeholder="Interesse 2"
+																th:value="${adicionais.interesse2}" /> <input
+																type="text" class="form-control" name="interesse3"
+																placeholder="Interesse 3"
+																th:value="${adicionais.interesse3}" />
+														</div>
+
+														<div class=" col form-outline flex-fill mb-0 me-2">
+															<label class="form-label fs-5"
+																for="contatos">Contatos</label>
+															<div class="input-group  input-group mb-1">
+																<span class="input-group-text" id="contatos"><i
+																		class="fas fa-store fs-5"></i></span> <input
+																	type="text" class="form-control" name="contato1"
+																	th:value="${adicionais.contato1}"
+																	placeholder="http://meusite.com">
+															</div>
+															<div class="input-group  input-group mb-1">
+																<span class="input-group-text"><i
+																		class="fab fa-instagram fs-5 px-1"></i></span>
+																<input type="text" class="form-control" name="contato2"
+																	th:value="${adicionais.contato2}"
+																	placeholder="instagram.com/usuario">
+															</div>
+															<div class="input-group  input-group mb-1">
+																<span class="input-group-text"><i
+																		class="fab fa-twitter fs-5 px-1"></i></span>
+																<input type="text" class="form-control" name="contato3"
+																	th:value="${adicionais.contato3}"
+																	placeholder="twitter.com/usuario">
+															</div>
+															<div class="input-group  input-group mb-1">
+																<span class="input-group-text"><i
+																		class="fab fa-facebook fs-5 px-1"></i></span>
+																<input type="text" class="form-control" name="contato4"
+																	th:value="${adicionais.contato4}"
+																	placeholder="facebook.com/usuario">
+															</div>
+														</div>
+													</div>
+
+													<div
+														class="d-flex flex-row flex-wrap border p-3 rounded align-items-top mb-2">
+														<div class=" col form-outline flex-fill mb-2 me-2">
+															<label class="form-label fs-5" for="interesses">Bio</label>
+															<div>
+																<span class="text-muted">Bio Atual</span>
+																<p th:text="${perfil.bio}"></p>
+															</div>
+														</div>
+
+														<div class=" col form-outline flex-fill mb-0 me-2">
+															<label class="form-label" for="txt">Insira uma
+																nova bio</label>
+															<div class="input-group input-group mb-1" id="txt">
+																<textarea name="bio" class="form-control" rows="4"
+																	cols="50" th:value="${perfil.bio}"></textarea>
+															</div>
+														</div>
+													</div>
+
+													<div
+														class="d-flex flex-row flex-wrap border p-3 rounded align-items-top justify-content-start mb-2">
+														<div class="row mb-3">
+															<div class="col">
+																<h5 class="mb-0">Escolaridade</h5>
+															</div>
+															<div class="col-sm-9 text-secondary">
+																<select id="escolaridade"
+																	class="form-control form-select my-1"
+																	name="escolaridade">
+																	<option th:value="${perfil.escolaridade}" disabled
+																		selected>Selecione</option>
+																	<option value="Não Informado">Não Informado
+																	</option>
+																	<option value="Nao Alfabetizado">Não
+																		Alfabetizado</option>
+																	<option value="Ensino Fundamental Completo">
+																		Ensino
+																		Fundamental Completo</option>
+																	<option value="Ensino Medio Completo">Ensino
+																		Médio Completo</option>
+																	<option value="Ensino Superior Completo">Ensino
+																		Superior Completo</option>
+																	<option value="Ensino Fundamental Incompleto">
+																		Ensino
+																		Fundamental Incompleto</option>
+																	<option value="Ensino Medio Incompleto">Ensino
+																		Médio Incompleto</option>
+																	<option value="Ensino Superior Incompleto">
+																		Ensino
+																		Superior Incompleto</option>
+																</select> <span>Dado Cadastrado:
+																	<span th:text="${perfil.escolaridade}"></span>
+															</div>
+														</div>
+														<div class="row mb-3">
+															<div class="col">
+																<h5 class="mb-0">Renda</h5>
+															</div>
+															<div class="col-sm-9 text-secondary">
+																<select id="renda" class="form-control form-select my-1"
+																	name="renda">
+																	<option th:value="${perfil.renda}" disabled
+																		selected>
+																		Selecione</option>
+																	<option value="Não Informado">Não Informado
+																	</option>
+																	<option value="Nenhuma Renda">Nenhuma Renda
+																	</option>
+																	<option value="0 a 1 Salario Minimo">Até 1
+																		Salário Mínimo</option>
+																	<option value="1 a 3 Salarios Minimos">De 1 a
+																		3 Salários Mínimos</option>
+																	<option value="3 a 5 Salarios Minimos">De 3 a
+																		5 Salários Mínimos</option>
+																	<option value="Mais que 5 Salários">Mais que
+																		5 Salários Mínimos</option>
+																</select> <span>Dado Cadastrado:
+																	<span th:text="${perfil.renda}"></span></span>
+															</div>
+														</div>
+
+														<div class="row mb-3 d-flex justify-content-start">
+															<div class="col">
+																<h5 class="mb-0">Data de Nascimento</h5>
+															</div>
+															<div class="col-sm-9 text-secondary">
+																<input type="date" id="dataNas" class="form-control"
+																	name="dataNas" th:value="${perfil.dataNas}" />
+																<span>Dado Cadastrado: <span class="dataConvert mt-5"
+																		th:text="${perfil.dataNas}"></span></span>
+															</div>
+														</div>
+													</div>
+											</div>
+
+											<div
+												class="d-flex justify-content-center flex-column align-items-center fs-6 mb-2">
+												<div class="row mb-2">
+													<img th:src="${perfil.fotoUrl}" width="150px" height="150px"
+														alt="Foto Usuario">
+												</div>
+												<div class="row">
+													<div class="input-group input-group mb-3">
+														<span class="input-group-text"><i
+																class="far fa-image"></i></span> <input type="text"
+															class="form-control" size="100" name="fotoUrl"
+															th:value="${perfil.fotoUrl}" placeholder="http://imagem">
+													</div>
+												</div>
+											</div>
+
+											<div class="fs-6 mb-2">
+												<div class="row">
+													<div class="input-group input-group mb-3">
+														<div
+															class="d-flex align-items-end form-outline flex-md-wrap flex-fill mb-4 w-50">
+															<label class="form-label fs-5 mx-2"
+																for="senhaUsuario">Senha</label>
+															<a type="button" class="btn btn-info text-white px-3 mt-4"
+																data-bs-toggle="modal" data-bs-target="#modalSenha">
+																Trocar Senha </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="d-flex justify-content-center align-items-baseline my-3 gap-2">
+												<button type="submit" class="btn btn-lg btn-primary"> Salvar
+													Alterações</button>
+												<a th:href="@{/perfil/details(perfilId=${perfil.id})}"
+													class="btn btn-lg btn-secondary" target="_blank" type="button">Ver
+													na Plataforma</a>
+											</div>
+											</form>
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		</div>
+
+		</section>
+		</main>
+
+		<!-- Modal -->
+		<div class="modal fade" id="modalSenha" tabindex="-1" aria-labelledby="modalSenhaLabel" aria-hidden="true">
+			<form th:action="@{/admin/usuario/editar/senha}" class="requires-validation" novalidate
+				th:object="${usuarioId}" method="post">
+				<input type="hidden" th:value="${usuario.id}" name="usuarioId">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalSenhaLabel">
+								Mudança de
+								Senha</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="text-danger text-center mb-1 error" id="senhasInco"></div>
+							<div class="col mb-4 text-center mx-1">
+								<div class="form-outline">
+									<input type="password" class="form-control w-100" id="senha1Cadastro" required>
+									<label for="senha1Cadastro" class="form-label mt-1">Insira
+										uma Senha (*)</label>
+								</div>
+							</div>
+							<div class="col mb-4 text-center">
+								<div class="form-outline">
+									<input type="password" class="form-control w-100" name="senha" id="senha2Cadastro"
+										required> <label for="senha2Cadastro" class="form-label mt-1">Re-insira
+										a senha (*)</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+							<button type="submit" class="btn btn-primary">Salvar</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+	</div>
+	<footer class="row container-fluid footer">
+		<div class="col col-md-8">&reg; Empreenda + | 2023</div>
+		<div class="col col-6 col-md-4 d-flex justify-content-end">Versão
+			- 3.0 (Spring)</div>
+	</footer>
+
+
+</body>
+
+</html>

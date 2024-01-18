@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+	<!-- Link CSS Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+	<!-- Link JavaScript Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+
+	<!-- Link Font-Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<!-- Link Tiny MCE -->
+	<script src="https://cdn.tiny.cloud/1/8svz9148gua03293my7b0e5drfls3zdv5h5b52vt4dbntdgt/tinymce/6/tinymce.min.js"
+		referrerpolicy="origin"></script>
+
+	<link rel="stylesheet" href="./css/style.css">
+
+	<style>
+		iframe,
+		#media {
+			margin-left: auto;
+			margin-right: auto;
+			display: inline;
+			inline-size: -webkit-fill-available;
+		}
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<title>Página Principal</title>
+
+	<script>
+		tinymce
+			.init({
+				selector: 'textarea',
+				plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+				toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+				height: 250,
+				menubar: 'file edit view'
+			});
+
+		document.addEventListener("DOMContentLoaded", function () {
+			var dataConvertElements = document.querySelectorAll('.dataConvert');
+
+			dataConvertElements.forEach(function (element) {
+				var dataSQL = element.textContent;
+				var partesData = dataSQL.split('-');
+				var dataFormatada = partesData[2] + '/' + partesData[1] + '/'
+					+ partesData[0];
+				element.textContent = dataFormatada;
+			});
+		});
+		
+		window.onscroll = function () {
+			let botaoTopo = document.getElementById("botao-topo");
+			if (document.body.scrollTop > 20
+				|| document.documentElement.scrollTop > 20) {
+				botaoTopo.style.display = "block";
+			} else {
+				botaoTopo.style.display = "none";
+			}
+		};
+
+		function scrollToTop() {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		};
+	</script>
+
+
+</head>
+
+<body>
+	<!-- Menu Principal -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/index}">Empreenda <span class="tituloMais">+</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/index}"> <i
+								class="fas fa-home"></i>
+							Página Principal
+						</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/cursos/index}"> <i class="fas fa-book-open"></i> Cursos
+						</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
+							Cadastrar</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
+							Entrar</a></li>
+					<li sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
+								class="fas fa-envelope"></i> Mensagens
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
+							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+							href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Perfil </a>
+						<ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#"><i class="fas fa-user-circle fs-4 px-1"></i>
+									<span th:text="${#authentication.name}">
+									</span></a></li>
+							<li><a class="dropdown-item" th:href="@{/perfil}"><button class="btn border"
+										id="btnPerfil">Ver
+										Perfil</button></a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#">Configurações</a></li>
+							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+						</ul>
+					</li>
+					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
+							th:href="@{/admin/index}" target="_blank"> <i class="fas fa-user-cog"></i>
+							Dashboard ADM
+						</a></li>
+					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
+							th:href="@{/colab/index}" target="_blank"> <i class="fas fa-user"></i> Dashboard
+							Colaborador
+						</a></li>
+				</ul>
+				<form class="d-flex">
+					<input class="form-control me-2" type="search" placeholder="Pesquisar Assunto" aria-label="Search">
+					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<main id="topo">
+		<!-- Carousel Banners -->
+		<section class="container-full containerCarousel">
+			<div id="carouselBanner" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="0" class="active"
+						aria-current="true" aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="1"
+						aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#carouselBanner" data-bs-slide-to="2"
+						aria-label="Slide 3"></button>
+				</div>
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<a href="https://www.cursoemvideo.com/" target="_blank"><img
+								src="./image/cursos-gratuito-em-video.png" class="d-block w-100"
+								alt="mais de 100 cursos gratuitos no sebrae"></a>
+					</div>
+					<div class="carousel-item">
+						<a href="https://www.sebrae.com.br/sites/PortalSebrae/cursoseeventoseducacao?uf=SP"
+							target="_blank"><img src="./image/mais-de-100-cursos-gratuitos-sebrae.png"
+								class="d-block w-100" alt="desenhos de personagens estudando"></a>
+					</div>
+					<div class="carousel-item">
+						<img src="./image/desenhos-de-personagens-estudando.png" class="d-block w-100"
+							alt="cursos gratuitos em vídeo">
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselBanner"
+					data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Anterior</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselBanner"
+					data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Próximo</span>
+				</button>
+			</div>
+		</section>
+		
+		<a href="#topo" id="botao-topo" title="Voltar ao Topo"> <i
+				class="fas fa-chevron-up text-primary fs-2 rounded-circle bg-light px-3 py-3 shadow-sm float-end position-fixed bottom-0 end-0 m-3"></i>
+		</a>
+
+		<section class="container mx-auto d-flex flex-lg-row">
+
+			<section class="col col-md-9">
+				<section sec:authorize="!isAuthenticated()" class="jumbotron border rounded bg-white my-3 p-3">
+					<h1 class="display-4">Olá!</h1>
+					<p class="lead">Precisa de ajuda para melhorar seus negócios ou
+						de um caminho a seguir?</p>
+					<hr class="my-4">
+					<p>Cadastre-se ou acesse sua conta na plataforma para interagir
+						com a comunidade, pedir ajuda, ajudar, anunciar vaga ou curso e
+						muito mais!</p>
+
+					<div>
+						<a class="btn btn-primary btn-lg mx-4" th:href="@{/register}" role="button">Cadastre-se</a> <a
+							class="btn btn-white btn-lg border" th:href="@{/login}" role="button"
+							id="btLoginJumbo">Fazer Login</a>
+					</div>
+				</section>
+
+				<div th:if="${param.denuncia}">
+					<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+						<i class="fas fa-exclamation fs-3 mx-2"></i> Denuncia registrada com sucesso!
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				</div>
+
+				<section sec:authorize="isAuthenticated()" class="col col-md">
+					<div th:if="${param.postSuccess}">
+						<div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+							<i class="fas fa-check-circle fs-3"></i> Postagem feita com sucesso!
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					</div>
+
+					<form th:action="@{/post/save}" method="post">
+						<section class="container my-3 border rounded p-3 bg-white">
+							<label for="formPostagem" class="fw-semibold fs-3 mb-3">
+								Faça uma postagem: </label>
+							<div class="mb-3">
+								<div class="row align-items-end">
+									<div class="col-8">
+										<label for="inputTituloPostagem" class="form-label fs-4">Título
+											do Post</label> <input type="text" class="form-control"
+											id="inputTituloPostagem" required name="titulo"
+											placeholder="Título da Postagem (*)">
+									</div>
+									<div class="col-4">
+										<select name="categoria" required class="form-select form-select-sm py-1">
+											<option selected disabled>Categoria (*)</option>
+											<option value="Cursos">Cursos</option>
+											<option value="Vagas">Vagas</option>
+											<option value="Perguntas">Perguntas</option>
+											<option value="Dicas">Dicas</option>
+											<option value="Outros">Outros</option>
+										</select>
+									</div>
+								</div>
+
+							</div>
+							<div class="mb-3">
+								<textarea class="form-control" id="areaTextoPost" rows="3"
+									placeholder="Digite seu texto aqui (*)" name="corpo"></textarea>
+							</div>
+							<div>
+								<label for="basic-url" class="form-label">Insira o link
+									de uma imagem</label>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon3"><i class="far fa-image"></i></span>
+									<input type="text" class="form-control" name="media_url" id="basic-url"
+										aria-describedby="basic-addon3">
+								</div>
+							</div>
+							<div>
+								<button type="submit" class="btn bg-primary text-light">Postar</button>
+								<small class="mx-2">Campos Obrigatórios (*)</small>
+							</div>
+						</section>
+					</form>
+				</section>
+
+				<div class="container">
+					<div class="row">
+						<h3 class="text-center">Feed</h3>
+					</div>
+					<div class="row d-flex justify-content-end">
+						<div class="dropdown d-flex justify-content-end">
+							<button class="btn dropdown-toggle menuCategoria" type="button" id="dropdownMenuButton1"
+								data-bs-toggle="dropdown" aria-expanded="false">Filtrar Categoria</button>
+							<ul class="dropdown-menu px-2 corpoMenuCategoria" aria-labelledby="dropdownMenuButton1">
+								<li><a class="dropdown-item bg-primary text-light rounded text-center mt-1 btnCategoria pt-0"
+										href="#">Vagas</a></li>
+								<li><a class="dropdown-item bg-success text-light rounded text-center mt-1 btnCategoria pt-0"
+										href="#">Cursos</a></li>
+								<li><a class="dropdown-item bg-warning text-light rounded text-center mt-1 btnCategoria pt-0"
+										href="#">Dúvidas</a></li>
+								<li><a class="dropdown-item bg-info text-light rounded text-center mt-1 btnCategoria pt-0"
+										href="#">Dicas</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- Área de Posts -->
+				<section>
+					<!-- Postagens -->
+					<div th:each="postagem, i : ${postagens}" class="container my-3 border rounded bg-white">
+						<div class="headerPost mb-3 p-3 row row-cols-auto">
+							<!-- Perfil do Usuário -->
+							<div class="col float-start mb-3">
+								<a class="" th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}">
+									<img th:src="${postagem.perfil.fotoUrl}" alt="Foto de perfil" id="imgPerfilFeed"
+										class="img-fluid rounded-circle shadow-sm" style="width: 100px; height: 100px;">
+								</a>
+
+							</div>
+							<!-- Informações do Usuário -->
+							<div class="col py-4">
+								<a th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}" id="nomeUsuario"><span
+										th:text="${postagem.perfil.usuario.nome}"></span></a> <br> <span
+									class="text-muted dataConvert" th:text="${postagem.dataPostagem}"></span>
+								<br>
+								<div
+									class="border rounded position-absolute bg-success mt-2 text-white px-2 py-0 catPost">
+									<span th:text="${postagem.categoria}"></span>
+								</div>
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="mb-3">
+							<label for="inputTituloPostagem" class="form-label fs-4"
+								th:text="${postagem.titulo}"></label>
+						</div>
+						<div class="mb-3" th:utext="${postagem.corpo}">
+
+						</div>
+						<div class="mb-3 d-flex justify-content-center">
+							<img th:if="${postagem.mediaUrl != null && postagem.mediaUrl != ''}"
+								th:src="${postagem.mediaUrl}" alt="Img Postagem" class="img-fluid w-50 h-25 mx-50"
+								onerror="this.style.display='none';">
+						</div>
+
+						<div class="mb-3">
+							<input type="radio" class="btn-check" name="like" id="option1" autocomplete="off">
+							<label class="btn bg-primary text-light" for="option1"><i class="fas fa-thumbs-up"></i>
+								Gostei</label>
+							<a th:href="@{/post/detalhe(id=${postagem.id})}" class="btn btn-light" title="Ver Detalhes">
+								<i class="far fa-comments"></i> Comentários (<span
+									th:text="${contagemComentarios[__${i.index}__]}"></span>)
+							</a>
+
+							<div class="float-end mb-3">
+								<form th:action="@{/post/index/flag}" method="post">
+									<input type="hidden" name="id" th:value="${postagem.id}">
+									<button type="submit" class="btn ">
+										<i class="fas fa-exclamation-circle fs-4 text-danger"
+											title="Denunciar Postagem"></i>
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</section>
+
+			</section>
+			<!-- Área Lateral -->
+			<aside class="col-4 mx-3 position-fixed-top" id="areaLateral">
+				<section class="my-3 border rounded p-3 bg-white">
+					<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>
+					<div id="bannerDivulgação">
+						<img src="./image/ads-itau.jpg" alt="" class="img-fluid">
+					</div>
+				</section>
+
+			</aside>
+		</section>
+	</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Link CSS Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+	<!-- Link JavaScript Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+
+	<!-- Link Font-Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../css/stylePerfil.css">
+
+	<style>
+		@media screen and (max-width: 1000px) {
+			.dataHeader {
+				display: block;
+			}
+		}
+
+		@media screen and (min-width: 1001px) {
+			.dataHeader {
+				display: none;
+			}
+		}
+	</style>
+
+	<title th:text="'Perfil de ' + ${perfil.usuario.nome}"></title>
+
+
+	<script>
+		window.onscroll = function () {
+			let botaoTopo = document.getElementById("botao-topo");
+			if (document.body.scrollTop > 20
+				|| document.documentElement.scrollTop > 20) {
+				botaoTopo.style.display = "block";
+			} else {
+				botaoTopo.style.display = "none";
+			}
+		};
+
+		function scrollToTop() {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		};
+
+		document.addEventListener("DOMContentLoaded", function () {
+			var dataConvertElements = document.querySelectorAll('.dataConvert');
+
+			dataConvertElements.forEach(function (element) {
+				var dataSQL = element.textContent;
+				var partesData = dataSQL.split('-');
+				var dataFormatada = partesData[2] + '/' + partesData[1] + '/'
+					+ partesData[0];
+				element.textContent = dataFormatada;
+			});
+		});
+	</script>
+
+</head>
+
+<body style="margin-top: 0 !important;">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/index}">Empreenda <span class="tituloMais">+</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link" aria-current="page" th:href="@{/index}"> <i
+								class="fas fa-home"></i>
+							Página Principal
+						</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos
+						</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
+							Cadastrar</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
+							Entrar</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
+								class="fas fa-envelope"></i> Mensagens
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
+							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							Perfil </a>
+						<ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#"><i class="fas fa-user-circle fs-4 px-1"></i>
+									<span th:text="${#authentication.name}">
+									</span></a></li>
+							<li><a class="dropdown-item" th:href="@{/perfil}"><button class="btn border"
+										id="btnPerfil">Ver
+										Perfil</button></a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#">Configurações</a></li>
+							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+						</ul>
+					</li>
+					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							Dashboard ADM
+						</a></li>
+					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardColab/Dashboard.jsp"> <i class="fas fa-user"></i> Dashboard
+							Colaborador
+						</a></li>
+				</ul>
+				<form class="d-flex">
+					<input class="form-control me-2" type="search" placeholder="Pesquisar Assunto" aria-label="Search">
+					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<a href="#topo" id="botao-topo" title="Voltar ao Topo"> <i
+				class="fas fa-chevron-up text-primary fs-2 rounded-circle bg-light px-3 py-3 shadow-sm float-end position-fixed bottom-0 end-0 m-3"></i>
+		</a>
+		<div class="main-body" style="margin-top: 10vh;">
+			<div class="row gutters-sm">
+				<div class="col-md-4 mb-3">
+					<div class="card" id="topo">
+						<div class="card-body">
+							<div class="d-flex flex-column align-items-center text-center">
+								<div class="rounded imgPerfilUsuario p-0 shadow-sm">
+									<img th:src="${perfil.fotoUrl}" class="img-fluid imgPerfilUsuario2"
+										alt="Foto Perfil" />
+								</div>
+								<div class="mt-3">
+									<h4 th:text="${perfil.usuario.nome}"></h4>
+									<p class="text-secondary mb-1">
+										<span th:text="${perfil.ocupacao} ?: 'Ocupação não informada'"></span>
+									</p>
+									<p class="text-muted font-size-sm">
+										<span th:text="${endereco.cidade} ?: 'Cidade não informada'"></span> / <span
+											th:text="${endereco.uf} ?: 'UF não informada'"></span>
+									</p>
+									<button class="btn btn-primary">Seguir</button>
+									<button class="btn btn-outline-primary">Enviar
+										Mensagem</button>
+									<div class="mt-3">
+										<h3 class="text-muted">Bio</h3>
+										<p id="bio">
+											<span class="fs-1 ">"</span> <span
+												th:text="${perfil.bio} ?: 'Bio não informada'"></span><span
+												class="fs-1">"</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card Lateral - Redes de Contato -->
+					<c:forEach items="${perfil}" var="perfil">
+						<div class="card mt-3 p-2">
+							<h5 class="text-center text-muted">Redes de Contato</h5>
+							<ul class="list-group list-group-flush text-center">
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0">
+										<i class="fas fa-store" style="font-size: 20px;"></i> <span
+											class="bulletContato">&#x2022;</span> Loja
+									</h6> <a th:href="${adicionais.contato1}" target="_blank">
+										<span th:text="${adicionais.contato1} ?: 'Site não informado'"></span>
+									</a>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0">
+										<i class="fab fa-instagram" style="font-size: 20px;"></i> <span
+											class="bulletContato">&#x2022;</span> Instagram
+									</h6> <a th:href="${adicionais.contato2}" target="_blank">
+										<span th:text="${adicionais.contato2} ?: 'Rede não informada'"></span></a>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0">
+										<i class="fab fa-twitter" style="font-size: 20px;"></i> <span
+											class="bulletContato">&#x2022;</span> Twitter
+									</h6> <a th:href="${adicionais.contato3}" target="_blank">
+										<span th:text="${adicionais.contato3} ?: 'Rede não informada'"></span></a>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0">
+										<i class="fab fa-facebook" style="font-size: 20px;"></i> <span
+											class="bulletContato">&#x2022;</span> Facebook
+									</h6> <a href="${adicionais.contato4}" target="_blank">
+										<span th:text="${adicionais.contato4} ?: 'Rede não informada'"></span></a>
+								</li>
+							</ul>
+						</div>
+					</c:forEach>
+				</div>
+
+				<!-- Dados Usuário -->
+				<div class="col-md-8">
+					<div class="card mb-3">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Nome Completo</h6>
+								</div>
+								<div class="col-sm-9 text-secondary"><span th:text="${perfil.usuario.nome}"></span>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Email</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<span th:if="${perfil.usuario.compartilharEmail}">
+										<span th:text="${perfil.usuario.email}"></span>
+									</span>
+									<span th:unless="${perfil.usuario.compartilharEmail}">
+										O usuário optou por não compartilhar esse dado
+									</span>
+								</div>
+							</div>
+							</c:forEach>
+							<hr>
+							<c:forEach items="${perfil}" var="perfil">
+								<div class="row">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Telefone</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<span th:if="${perfil.compartilharTelefone1}">
+											<span th:text="${perfil.telefone1}"></span>
+										</span>
+										<span th:unless="${perfil.compartilharTelefone1}">
+											O usuário optou por não compartilhar esse dado
+										</span>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Celular</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<span th:if="${perfil.compartilharTelefone2}">
+											<span th:text="${perfil.telefone2}"></span>
+										</span>
+										<span th:unless="${perfil.compartilharTelefone2}">
+											O usuário optou por não compartilhar esse dado
+										</span>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Endereço</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<div class="col-sm-9 text-secondary">
+											<span th:if="${endereco.compartilharEndereco}">
+												<span th:text="${endereco.logradouro}"></span>
+											</span>
+											<span th:unless="${perfil.compartilharTelefone1}">
+											</span>
+										</div>
+										<span id="cidade"
+											th:text="${endereco.cidade} ?: 'Cidade não informada'"></span>/ <span
+											id="uf" th:text="${endereco.uf} ?: 'UF não informada'"></span>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
+
+					<div class="row gutters-sm">
+						<div class="col-sm-6 mb-3">
+							<div class="card h-100 p-3">
+								<h5 class="text-center text-muted">Interesses</h5>
+								<div class="mb-3">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item"
+											th:text="${adicionais.interesse1} ?: 'Interesse não adicionado pelo usuário'">
+										</li>
+										<li class="list-group-item"
+											th:text="${adicionais.interesse2} ?: 'Interesse não adicionado pelo usuário'">
+										</li>
+										<li class="list-group-item"
+											th:text="${adicionais.interesse3} ?: 'Interesse não adicionado pelo usuário'">
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 mb-3">
+							<div class="card h-100">
+								<div class="card-body">
+									<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1"
+										id="tagAds">Ads</div>
+									<div id="bannerDivulgação">
+										<img src="../image/ads-itau.jpg" alt="" class="img-fluid">
+									</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+					<ul class="timeline">
+						<li th:each="postagem, i : ${postagens}">
+							<div class="timeline-time">
+								<span class="date">Postado em</span> <span class="date dataConvert"
+									th:text="${postagem.dataPostagem}"></span>
+							</div>
+							<div class="timeline-icon">
+								<a href="javascript:;">&nbsp;</a>
+							</div>
+							<div class="timeline-body">
+								<div class="timeline-header">
+									<span class="userimage"><img th:src="${postagem.perfil.fotoUrl}" alt=""></span>
+									<span class="username"><a href="javascript:;"><span
+												th:text="${postagem.perfil.usuario.nome}"></span></a>
+										<small class="date text-muted dataConvert float-end dataHeader"
+											th:text="${postagem.dataPostagem}">
+
+										</small></span>
+									<div class="timeline-time-post">
+										<span></span>
+									</div>
+								</div>
+								<div class="timeline-content">
+									<p th:utext="${postagem.corpo}"></p>
+									<div class="mb-3 d-flex justify-content-center">
+										<img th:if="${postagem.mediaUrl != null && postagem.mediaUrl != ''}"
+											th:src="${postagem.mediaUrl}" alt="Img Postagem"
+											class="img-fluid w-50 h-25 mx-50" onerror="this.style.display='none';">
+									</div>
+								</div>
+								<div class="timeline-likes d-flex justify-content-between">
+									<div class="fs-4">
+										<i class="far fa-thumbs-up"></i>
+										</span> <span class="stats-total">0</span>
+									</div>
+									<div class="stats-right">
+										<a th:href="@{/post/detalhe(id=${postagem.id})}"
+											class="btn border-0 mx-1 btn-light" title="Ver Detalhes">
+											<i class="far fa-comments"></i> Comentários (<span
+												th:text="${contagemComentarios[__${i.index}__]}"></span>)
+										</a>
+									</div>
+								</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	</div>
+
+	</div>
+	</div>
+
+
+</body>
+
+</html>

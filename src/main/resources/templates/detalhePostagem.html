@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+	<!-- Link CSS Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+	<!-- Link JavaScript Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+
+	<!-- Link Font-Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link type="text/css" rel="stylesheet" href="../css/style.css">
+
+	<style>
+		iframe,
+		#media {
+			margin-left: auto;
+			margin-right: auto;
+			display: inline;
+			inline-size: -webkit-fill-available;
+		}
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<title th:text="${postagem.titulo}"></title>
+
+	<script>
+
+		document.addEventListener("DOMContentLoaded", function () {
+			var dataConvertElements = document.querySelectorAll('.dataConvert');
+
+			dataConvertElements.forEach(function (element) {
+				var dataSQL = element.textContent;
+				var partesData = dataSQL.split('-');
+				var dataFormatada = partesData[2] + '/' + partesData[1] + '/'
+					+ partesData[0];
+				element.textContent = dataFormatada;
+			});
+		});
+	</script>
+
+
+</head>
+
+<body>
+	<!-- Menu Principal -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/index}">Empreenda <span class="tituloMais">+</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/index}"> <i
+								class="fas fa-home"></i>
+							Página Principal
+						</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos
+						</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
+							Cadastrar</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
+							Entrar</a></li>
+					<li sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
+								class="fas fa-envelope"></i> Mensagens
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
+							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+							href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Perfil </a>
+						<ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#"><i class="fas fa-user-circle fs-4 px-1"></i>
+									<span th:text="${#authentication.name}">
+									</span></a></li>
+							<li><a class="dropdown-item" th:href="@{/perfil}"><button class="btn border"
+										id="btnPerfil">Ver
+										Perfil</button></a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#">Configurações</a></li>
+							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+						</ul>
+					</li>
+					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							Dashboard ADM
+						</a></li>
+					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardColab/Dashboard.jsp"> <i class="fas fa-user"></i> Dashboard
+							Colaborador
+						</a></li>
+				</ul>
+				<form class="d-flex">
+					<input class="form-control me-2" type="search" placeholder="Pesquisar Assunto" aria-label="Search">
+					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<main>
+		<div th:if="${param.denuncia}">
+				<div class="alert alert-danger alert-dismissible fade show text-center" role="alert" style="margin-top: 10vh!important;">
+					<i class="fas fa-exclamation fs-3 mx-2"></i> Denuncia registrada com sucesso!
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+		<section class="container mx-auto d-flex justify-content-center flex-lg-row">
+			<div class="card" style="margin-top: 3vh!important;">
+				<div class="card-header border-0 pb-0">
+					<div class="d-flex align-items-center justify-content-between">
+						<div class="d-flex align-items-center mb-2">
+							<div class="avatar avatar-story me-2">
+								<a th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}"> <img
+										class="rounded-circle" th:src="${postagem.perfil.fotoUrl}" alt="Foto de Perfil"
+										width="100px" height="auto"> </a>
+							</div>
+							<div>
+								<div class="nav nav-divider">
+									<h6 class="nav-item card-title mb-0 mx-1"> <a
+											th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}"
+											th:text="${postagem.perfil.usuario.nome}"></a></h6>
+									<span class="text-muted mx-1">&#x2022;</span>
+									<span class="nav-item text-muted small dataConvert mx-1"
+										th:text="${postagem.dataPostagem}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="dropdown">
+							<a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
+								id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="fas fa-ellipsis-v"></i>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+								<li><a class="dropdown-item" href="#"> <i class="far fa-bookmark"
+											style="margin-right: 5px;"></i>Salvar Post</a></li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+								<li>
+									<form th:action="@{/post/details/flag}" method="post">
+										<input type="hidden" name="postId" th:value="${postagem.id}">
+										<button type="submit" class="btn border-0">
+											<i class="far fa-flag" style="margin-right: 5px;"></i>Denunciar Postagem</a>
+										</button>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<h4 th:text="${postagem.titulo}"></h4>
+					<p th:utext="${postagem.corpo}"></p>
+					<div class="d-flex justify-content-center">
+						<img th:if="${postagem.mediaUrl != null && postagem.mediaUrl != ''}"
+							th:src="${postagem.mediaUrl}" alt="Img Postagem" class="card-img img-fluid w-75 mx-50"
+							onerror="this.style.display='none';">
+					</div>
+
+					<ul class="nav nav-stack py-3 small">
+						<li class="nav-item">
+							<a class="nav-link active" href="#!"> <i class="far fa-thumbs-up"
+									style="margin-right: 5px;"></i>Curtidas (56)</a>
+						</li>
+						<li class="nav-item dropdown ms-sm-auto">
+							<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								Compartilhe <i class="fas fa-share" style="margin-left: 5px;"></i>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
+								<li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copiar link
+										do post</a></li>
+								<li><a class="dropdown-item" href="#"> <i
+											class="bi bi-share fa-fw pe-2"></i>Compartilhar via …</a></li>
+							</ul>
+						</li>
+					</ul>
+
+					<div sec:authorize="isAuthenticated()" class="d-flex mb-3">
+						<form class="nav nav-item w-100 position-relative" th:action="@{/post/comment}" method="post">
+							<textarea data-autoresize="" class="form-control pe-5 bg-light" rows="1"
+								placeholder="Adicione um comentário..." name="comentario"></textarea>
+							<input type="hidden" name="postId" th:value="${postagem.id}">
+							<button
+								class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0"
+								type="submit" title="Enviar">
+								<i class="fas fa-paper-plane"></i>
+							</button>
+						</form>
+					</div>
+					<div sec:authorize="!isAuthenticated()" class="d-flex mb-3">
+						<p>Faça login para comentar <a class="btn btn-primary mx-1" th:href="@{/login}">Fazer Login</a>
+						</p>
+						<p> ou cadastre-se <a class="btn btn-success mx-1" th:href="@{/register}">Fazer Cadastro</a></p>
+					</div>
+					<ul th:each="comentarios : ${comentarios}" class="comment-wrap list-unstyled">
+						<li class="comment-item">
+							<div class="d-flex position-relative">
+								<div class="avatar avatar-xs">
+									<a href="#!"><img class="avatar-img rounded-circle"
+											th:src="${comentarios.perfil.fotoUrl}" width="60px" height="60px"
+											alt="Foto Usuario Comentário"></a>
+								</div>
+								<div class="ms-2">
+									<div class="bg-light rounded-start-top-0 p-3 rounded">
+										<div class="d-flex justify-content-between">
+											<h6 class="mb-1"> <a href="#!"
+													th:text="${comentarios.perfil.usuario.nome}"></a></h6>
+											<small class="ms-2 dataConvert"
+												th:text="${comentarios.dataComentario}"></small>
+										</div>
+										<p class="small mb-0" th:text="${comentarios.comentario}"></p>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+		</section>
+
+
+	</main>
+
+	<footer class="d-flex justify-content-center align-items-center gap-2" id="areaLateral">
+		<section class="my-3 border rounded p-3 bg-white" style="width: 305px; height: auto;">
+			<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>
+			<div id="bannerDivulgação">
+				<img src="../image/ads-itau.jpg" alt="" width="300px" height="auto" class="img-fluid">
+			</div>
+		</section>
+
+		<section class="my-3 border rounded p-3 bg-white" style="width: 305px; height: auto;">
+			<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>
+			<div id="bannerDivulgação">
+				<img src="https://pbs.twimg.com/media/FJTkzrUXEAcQDB0.jpg" alt="" width="300px" height="auto"
+					class="img-fluid">
+			</div>
+		</section>
+	</footer>
+
+</body>
+
+</html>

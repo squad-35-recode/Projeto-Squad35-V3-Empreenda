@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Link CSS Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+	<!-- Link JavaScript Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+
+	<!-- Link Font-Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/stylePerfil.css">
+
+	<title>Meus Cursos</title>
+
+
+	<script src="/script/deleteInscricaoUsuario.js"></script>
+
+	<script>
+		window.onscroll = function () {
+			let botaoTopo = document.getElementById("botao-topo");
+			if (document.body.scrollTop > 20
+				|| document.documentElement.scrollTop > 20) {
+				botaoTopo.style.display = "block";
+			} else {
+				botaoTopo.style.display = "none";
+			}
+		};
+
+		function scrollToTop() {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		};
+
+		document.addEventListener("DOMContentLoaded", function () {
+			var dataConvertElements = document.querySelectorAll('.dataConvert');
+
+			dataConvertElements.forEach(function (element) {
+				var dataSQL = element.textContent;
+				var partesData = dataSQL.split('-');
+				var dataFormatada = partesData[2] + '/' + partesData[1] + '/' + partesData[0];
+				element.textContent = dataFormatada;
+			});
+		});
+	</script>
+
+</head>
+
+<body>
+	<!-- Menu Principal -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/index}">Empreenda <span class="tituloMais">+</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link" aria-current="page" th:href="@{/index}"> <i
+								class="fas fa-home"></i>
+							Página Principal
+						</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/cursos/index}"> <i
+								class="fas fa-book-open"></i> Cursos
+						</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
+							Cadastrar</a></li>
+					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
+							Entrar</a></li>
+					<li sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
+								class="fas fa-envelope"></i> Mensagens
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link active"
+							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+						</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+							href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Perfil </a>
+						<ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#"><i class="fas fa-user-circle fs-4 px-1"></i>
+									<span th:text="${#authentication.name}">
+									</span></a></li>
+							<li><a class="dropdown-item" th:href="@{/perfil}"><button class="btn border"
+										id="btnPerfil">Ver
+										Perfil</button></a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#">Configurações</a></li>
+							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+						</ul>
+					</li>
+					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
+							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							Dashboard ADM
+						</a></li>
+					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
+							th:href="@{/colab/index}" target="_blank"> <i class="fas fa-user"></i> Dashboard
+							Colaborador
+						</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<a href="#topo" id="botao-topo" title="Voltar ao Topo"> <i
+				class="fas fa-chevron-up text-primary fs-2 rounded-circle bg-light px-3 py-3 shadow-sm float-end position-fixed bottom-0 end-0 m-3"></i>
+		</a>
+		<div class="main-body mt-50">
+			<div class="container-fluid conteudo">
+				<div th:if="${param.deleteSuccess}">
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<i class="fas fa-info-circle fs-4 mx-1"></i> Cancelamento efetuado com sucesso!
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+				<main>
+					<h1> <i class="fas fa-book-open px-3 py-4"> </i>Lista de Inscrições</h1>
+
+					<div class="row">
+						<div class="col-sm-6 mt-2" th:each="inscricao : ${inscricoes}">
+							<div class="card">
+								<div class="card-body" >
+									<h5 class="card-title">Nome do Curso: <span class="text-secondary" th:text="${inscricao.curso.titulo}"></span></h5>
+									<hr />
+									<p class="card-text">
+										<span class='fw-semibold'>Código da Inscrição: </span>
+										<span class='text-secondary'># </span><span class='text-secondary' th:text="${inscricao.id}"></span>
+									</p>
+									<p class="card-text">
+										<span class='fw-semibold'>Data da Inscrição: </span>
+										<span class='text-secondary dataConvert' th:text="${inscricao.dataInscricao}"></span>
+									</p>
+									<p class="card-text">
+										<span class='fw-semibold'>Educador: </span>
+										<span class='text-secondary' th:text="${inscricao.curso.idColaborador.usuario.nome}"></span>
+									</p>
+									<div class="card-footer text-center">
+										<ul class="nav d-flex justify-content-center">
+											<li class="nav-item">
+												<a th:href="@{/cursos/usuario/detalhe(id=${inscricao.curso.id})}" class="nav-link" type="button">
+													Ver Conteúdo</a>
+											</li>
+											<li class="nav-item">
+												<a th:onclick="'confirmarDeletar(\'' + ${inscricao.id} + '\')'" class="btn nav-link text-danger fw-semibold">
+													Excluir
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+
+
+			</div>
+
+
+		</div>
+	</div>
+
+	</div>
+	</div>
+
+
+</body>
+
+</html>
