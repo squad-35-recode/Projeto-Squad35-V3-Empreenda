@@ -26,5 +26,3 @@
 - API .Net utilizando C#
 - Banco de Dados MySql
 
-
-### Estruturação e Estilização
