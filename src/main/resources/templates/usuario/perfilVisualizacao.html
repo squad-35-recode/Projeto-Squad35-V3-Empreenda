@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
 
 <head>
 	<meta charset="UTF-8">
@@ -85,7 +85,8 @@
 								class="fas fa-home"></i>
 							Página Principal
 						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos
+					<li class="nav-item"><a class="nav-link" th:href="@{/cursos/index}"> <i
+								class="fas fa-book-open"></i> Cursos
 						</a></li>
 					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
 							Cadastrar</a></li>
@@ -95,7 +96,7 @@
 								class="fas fa-envelope"></i> Mensagens
 						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
-							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
 						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
@@ -111,7 +112,6 @@
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li><a class="dropdown-item" href="#">Configurações</a></li>
 							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
 							<li>
 								<hr class="dropdown-divider">
@@ -120,11 +120,11 @@
 						</ul>
 					</li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
-							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							th:href="@{/admin/index}" target="_blank"> <i class="fas fa-user-cog"></i>
 							Dashboard ADM
 						</a></li>
 					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
-							href="/Empreenda-Mais/dashboardColab/Dashboard.jsp"> <i class="fas fa-user"></i> Dashboard
+							th:href="@{/colab/index}" target="_blank"> <i class="fas fa-user"></i> Dashboard
 							Colaborador
 						</a></li>
 				</ul>
@@ -239,55 +239,51 @@
 									</span>
 								</div>
 							</div>
-							</c:forEach>
 							<hr>
-							<c:forEach items="${perfil}" var="perfil">
-								<div class="row">
-									<div class="col-sm-3">
-										<h6 class="mb-0">Telefone</h6>
-									</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Telefone</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<span th:if="${perfil.compartilharTelefone1}">
+										<span th:text="${perfil.telefone1}"></span>
+									</span>
+									<span th:unless="${perfil.compartilharTelefone1}">
+										O usuário optou por não compartilhar esse dado
+									</span>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Celular</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<span th:if="${perfil.compartilharTelefone2}">
+										<span th:text="${perfil.telefone2}"></span>
+									</span>
+									<span th:unless="${perfil.compartilharTelefone2}">
+										O usuário optou por não compartilhar esse dado
+									</span>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Endereço</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
 									<div class="col-sm-9 text-secondary">
-										<span th:if="${perfil.compartilharTelefone1}">
-											<span th:text="${perfil.telefone1}"></span>
+										<span th:if="${endereco.compartilharEndereco}">
+											<span th:text="${endereco.logradouro}"></span>
 										</span>
 										<span th:unless="${perfil.compartilharTelefone1}">
-											O usuário optou por não compartilhar esse dado
 										</span>
 									</div>
+									<span id="cidade" th:text="${endereco.cidade} ?: 'Cidade não informada'"></span>/
+									<span id="uf" th:text="${endereco.uf} ?: 'UF não informada'"></span>
 								</div>
-								<hr>
-								<div class="row">
-									<div class="col-sm-3">
-										<h6 class="mb-0">Celular</h6>
-									</div>
-									<div class="col-sm-9 text-secondary">
-										<span th:if="${perfil.compartilharTelefone2}">
-											<span th:text="${perfil.telefone2}"></span>
-										</span>
-										<span th:unless="${perfil.compartilharTelefone2}">
-											O usuário optou por não compartilhar esse dado
-										</span>
-									</div>
-								</div>
-								<hr>
-								<div class="row">
-									<div class="col-sm-3">
-										<h6 class="mb-0">Endereço</h6>
-									</div>
-									<div class="col-sm-9 text-secondary">
-										<div class="col-sm-9 text-secondary">
-											<span th:if="${endereco.compartilharEndereco}">
-												<span th:text="${endereco.logradouro}"></span>
-											</span>
-											<span th:unless="${perfil.compartilharTelefone1}">
-											</span>
-										</div>
-										<span id="cidade"
-											th:text="${endereco.cidade} ?: 'Cidade não informada'"></span>/ <span
-											id="uf" th:text="${endereco.uf} ?: 'UF não informada'"></span>
-									</div>
-								</div>
-							</c:forEach>
+							</div>
 						</div>
 					</div>
 
@@ -374,10 +370,6 @@
 		</div>
 
 
-	</div>
-	</div>
-
-	</div>
 	</div>
 
 

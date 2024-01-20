@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
 
 <head>
 	<meta charset="UTF-8">
@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/stylePerfil.css">
 
-	<title>Meus Cursos</title>
+	<title>Empreenda + | Meus Cursos</title>
 
 
 	<script src="/script/deleteInscricaoUsuario.js"></script>
@@ -85,7 +85,7 @@
 								class="fas fa-envelope"></i> Mensagens
 						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link active"
-							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
 						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 							href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -100,7 +100,6 @@
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li><a class="dropdown-item" href="#">Configurações</a></li>
 							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
 							<li>
 								<hr class="dropdown-divider">
@@ -109,14 +108,13 @@
 						</ul>
 					</li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
-							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							th:href="@{/admin/index}" target="_blank"> <i class="fas fa-user-cog"></i>
 							Dashboard ADM
 						</a></li>
 					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
 							th:href="@{/colab/index}" target="_blank"> <i class="fas fa-user"></i> Dashboard
 							Colaborador
 						</a></li>
-				</ul>
 
 			</div>
 		</div>

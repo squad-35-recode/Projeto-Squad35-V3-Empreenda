@@ -37,7 +37,7 @@
 		}
 	</style>
 
-	<title>Detalhes do Curso</title>
+	<title th:text="'Detalhes do Curso: ' + ${curso.titulo}"></title>
 </head>
 
 <body class="mt-0">
@@ -83,7 +83,6 @@
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li><a class="dropdown-item" href="#">Configurações</a></li>
 							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
 							<li>
 								<hr class="dropdown-divider">
@@ -92,7 +91,7 @@
 						</ul>
 					</li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
-							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							th:href="@{/admin/index}" target="_blank"> <i class="fas fa-user-cog"></i>
 							Dashboard ADM
 						</a></li>
 					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
@@ -175,7 +174,8 @@
 													</form>
 												</div>
 												<div th:if="${inscricao}">
-													<a th:href="@{/cursos/usuario}" class="btn btn-primary btn-large" href="#">
+													<a th:href="@{/cursos/usuario}" class="btn btn-primary btn-large"
+														href="#">
 														Acesse o curso
 													</a>
 												</div>

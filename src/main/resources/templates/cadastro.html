@@ -21,43 +21,8 @@
 
 	<script async src="./script/script.js"></script>
 
-	<title>Cadastro</title>
+	<title>Empreenda + | Cadastro</title>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			// Função para obter os parâmetros da URL
-			function obterParametrosUrl() {
-				var params = {};
-				window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (
-					str, key, value) {
-					params[key] = value;
-				});
-				return params;
-			}
-
-			var parametros = obterParametrosUrl();
-			if (parametros.colab === 'true') {
-				var aviso = document.getElementById('avisoPerfil2');
-				aviso.style.display = 'block';
-				aviso.addEventListener('click', function () {
-					aviso.style.display = 'none';
-					var urlSemParametro = window.location.href.split('?')[0];
-					window.history
-						.replaceState({}, document.title, urlSemParametro);
-				});
-
-				// Define um temporizador para esconder o aviso após 5 segundos (5000 milissegundos)
-				setTimeout(function () {
-					aviso.style.display = 'none';
-					var urlSemParametro = window.location.href.split('?')[0];
-					window.history
-						.replaceState({}, document.title, urlSemParametro);
-				}, 10000);
-			}
-		});
-
-
-	</script>
 </head>
 
 <body>
@@ -77,7 +42,7 @@
 							Principal</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos</a>
+						<a class="nav-link" th:href="@{/cursos/index}"> <i class="fas fa-book-open"></i> Cursos</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link active" th:href="@{/register}"> Cadastrar</a>

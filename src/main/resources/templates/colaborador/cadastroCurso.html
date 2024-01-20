@@ -74,16 +74,16 @@
 								</a>
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
-									<li><a class="dropdown-item" href="/Empreenda-Mais/ListarInscricoesColab">Listar</a>
+									<li><a class="dropdown-item" th:href="@{/colab/inscricoes}">Listar</a>
 									</li>
 								</ul>
 							</li>
-							<li class="nav-item"><a href="/Empreenda-Mais/Index" class="nav-link" target="_blank"> <i
+							<li class="nav-item"><a th:href="@{/}" class="nav-link" target="_blank"> <i
 										class="fas fa-external-link-alt"></i>
 									Ver o Sistema Principal
 								</a></li>
 
-							<li class="nav-item"><a href="#" class="nav-link"> <i class="fas fa-sign-out-alt"></i> Sair
+							<li class="nav-item"><a th:href="@{/logout}" class="nav-link"> <i class="fas fa-sign-out-alt"></i> Sair
 								</a></li>
 
 						</ul>
@@ -244,9 +244,9 @@
 		</div>
 	</div>
 	<footer class="row container-fluid footer">
-		<div class="col col-md-8">&reg; Empreenda + | 2023</div>
+		<div class="col col-md-8">&reg; Empreenda + | 2024</div>
 		<div class="col col-6 col-md-4 d-flex justify-content-end">Versão
-			- 2.0</div>
+			- 3.0 (Spring)</div>
 	</footer>
 
 

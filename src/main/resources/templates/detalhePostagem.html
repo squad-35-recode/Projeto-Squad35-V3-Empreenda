@@ -68,7 +68,7 @@
 								class="fas fa-home"></i>
 							Página Principal
 						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-book-open"></i> Cursos
+					<li class="nav-item"><a class="nav-link" th:href="@{/cursos/index}"> <i class="fas fa-book-open"></i> Cursos
 						</a></li>
 					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
 							Cadastrar</a></li>
@@ -79,7 +79,7 @@
 								class="fas fa-envelope"></i> Mensagens
 						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
-							href="ListagemCursosUsuario"> <i class="fas fa-book-reader"></i> Meus Cursos
+							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
 						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 							href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,7 +94,6 @@
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li><a class="dropdown-item" href="#">Configurações</a></li>
 							<li><a class="dropdown-item" th:href="@{/ajuda}">Ajuda</a></li>
 							<li>
 								<hr class="dropdown-divider">
@@ -103,11 +102,11 @@
 						</ul>
 					</li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item"><a class="nav-link"
-							href="/Empreenda-Mais/dashboardAdmin/Dashboard.jsp"> <i class="fas fa-user-cog"></i>
+							th:href="@{/admin/index}" target="_blank"> <i class="fas fa-user-cog"></i>
 							Dashboard ADM
 						</a></li>
 					<li sec:authorize="hasAuthority('ROLE_COLAB')" class="nav-item"><a class="nav-link"
-							href="/Empreenda-Mais/dashboardColab/Dashboard.jsp"> <i class="fas fa-user"></i> Dashboard
+							th:href="@{/colab/index}" target="_blank"> <i class="fas fa-user"></i> Dashboard
 							Colaborador
 						</a></li>
 				</ul>

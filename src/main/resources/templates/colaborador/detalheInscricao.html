@@ -78,7 +78,8 @@
 									Ver o Sistema Principal
 								</a></li>
 
-							<li class="nav-item"><a href="#" class="nav-link"> <i class="fas fa-sign-out-alt"></i> Sair
+							<li class="nav-item"><a th:href="@{/logout}" class="nav-link"> <i
+										class="fas fa-sign-out-alt"></i> Sair
 								</a></li>
 
 						</ul>
@@ -89,97 +90,96 @@
 		<div class="container-fluid conteudo">
 
 			<main class="col pt-2 pb-4">
-				<jstl:forEach items="${inscricao}" var="inscricao">
-					<h1>
-						Dados da inscrição Nº <span class="text-primary" th:text="${inscricao.id}"></span>
-					</h1>
-					<hr>
-					<div class="col-lg-8 mx-auto">
-						<div class="card mb-4">
-							<div class="card-body">
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Dados do Usuário</p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1">ID: <span th:text="${inscricao.perfil.id}"></span>
-										</p>
-									</div>
+				<h1>
+					Dados da inscrição Nº <span class="text-primary" th:text="${inscricao.id}"></span>
+				</h1>
+				<hr>
+				<div class="col-lg-8 mx-auto">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Dados do Usuário</p>
 								</div>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Nome: </p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1" th:text="${inscricao.perfil.usuario.nome}"></p>
-									</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1">ID: <span th:text="${inscricao.perfil.id}"></span>
+									</p>
 								</div>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">E-mail: </p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1" th:text="${inscricao.perfil.usuario.email}"></p>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Escolaridade: </p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1" th:text="${inscricao.perfil.escolaridade}"></p>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Renda: </p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1" th:text="${inscricao.perfil.renda}"></p>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Data de Nascimento: </p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1 dataConvert" th:text="${inscricao.perfil.dataNas}">
-										</p>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1"></p>
-									</div>
-									<div class="col-sm-9">
-										<a th:href="@{/perfil/details(perfilId=${inscricao.perfil.id})}" class="btn btn-secondary" target="_blank">Ver Perfil Completo</a>
-									</div>
-								</div>
-								<hr>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Data da Inscrição</p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1"><span class="dataConvert"
-												th:text="${inscricao.dataInscricao}"></span></p>
-									</div>
-								</div>
-								<hr>
-								<div class="row">
-									<div class="col-sm-3">
-										<p class="mb-1">Título do Curso</p>
-									</div>
-									<div class="col-sm-9">
-										<p class="text-muted mb-1" th:text="${inscricao.curso.titulo}"></p>
-									</div>
-								</div>
-								<hr>
 							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Nome: </p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1" th:text="${inscricao.perfil.usuario.nome}"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">E-mail: </p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1" th:text="${inscricao.perfil.usuario.email}"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Escolaridade: </p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1" th:text="${inscricao.perfil.escolaridade}"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Renda: </p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1" th:text="${inscricao.perfil.renda}"></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Data de Nascimento: </p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1 dataConvert" th:text="${inscricao.perfil.dataNas}">
+									</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1"></p>
+								</div>
+								<div class="col-sm-9">
+									<a th:href="@{/perfil/details(perfilId=${inscricao.perfil.id})}"
+										class="btn btn-secondary" target="_blank">Ver Perfil Completo</a>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Data da Inscrição</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1"><span class="dataConvert"
+											th:text="${inscricao.dataInscricao}"></span></p>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<p class="mb-1">Título do Curso</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-1" th:text="${inscricao.curso.titulo}"></p>
+								</div>
+							</div>
+							<hr>
 						</div>
 					</div>
+				</div>
 
-				</jstl:forEach>
 
 				<div class="d-flex justify-content-center">
 					<a th:href="@{/colab/inscricoes}" class="btn btn-lg btn-success"> Voltar </a>
@@ -190,7 +190,7 @@
 		</div>
 	</div>
 	<footer class="row container-fluid footer">
-		<div class="col col-md-8">&reg; Empreenda + | 2023</div>
+		<div class="col col-md-8">&reg; Empreenda + | 2024</div>
 		<div class="col col-6 col-md-4 d-flex justify-content-end">Versão
 			- 3.0 (Spring)</div>
 	</footer>

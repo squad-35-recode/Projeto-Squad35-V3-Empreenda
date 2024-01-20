@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Colab - Lista de Cursos</title>
+	<title>Colaborador - Lista de Cursos</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -33,12 +33,6 @@
 </head>
 
 <body>
-
-	<div class="toast align-items-center avisoPerfil" id="avisoPerfil" style="display: none;" aria-live="assertive"
-		aria-atomic="true" role="alert">
-		<div class="toast-body bg-success text-white">Dados atualizados
-			com sucesso! Clique para fechar.</div>
-	</div>
 	<div class="container-fluid overflow-hidden">
 		<header class="container">
 			<nav class="navbar navbar-expand-lg fixed-top navbar-dark shadow-sm" id="menu">
@@ -58,8 +52,7 @@
 
 							<li class="dropdown"><a href="#" class="nav-link dropdown-toggle active" id="dropdown"
 									data-bs-toggle="dropdown" aria-expanded="false"> <i
-										class="fs-5 fas fa-book-open"></i><span
-										class="ms-1  d-sm-inline">Cursos</span>
+										class="fs-5 fas fa-book-open"></i><span class="ms-1  d-sm-inline">Cursos</span>
 								</a>
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
@@ -75,17 +68,18 @@
 								</a>
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
-									<li><a class="dropdown-item" href="/Empreenda-Mais/ListarInscricoesColab">Listar</a>
+									<li><a class="dropdown-item" th:href="@{/colab/inscricoes}">Listar</a>
 									</li>
 								</ul>
 							</li>
 
-							<li class="nav-item"><a href="/Empreenda-Mais/Index" class="nav-link" target="_blank"> <i
+							<li class="nav-item"><a th:href="@{/}" class="nav-link" target="_blank"> <i
 										class="fas fa-external-link-alt"></i>
 									Ver o Sistema Principal
 								</a></li>
 
-							<li class="nav-item"><a href="#" class="nav-link"> <i class="fas fa-sign-out-alt"></i> Sair
+							<li class="nav-item"><a th:href="@{/logout}" class="nav-link"> <i
+										class="fas fa-sign-out-alt"></i> Sair
 								</a></li>
 
 						</ul>
@@ -143,14 +137,21 @@
 												<li><a th:href="@{/colab/curso/detalhe(id=${curso.id})}"
 														class="btn dropdown-item" type="button">Detalhes</a>
 												</li>
-												<li><hr class="dropdown-divider"></li>
-												<li><a th:href="@{/cursos/detalhe(id=${curso.id})}"
-														class="btn dropdown-item" target="_blank" type="button">Ver na Plataforma</a>
+												<li>
+													<hr class="dropdown-divider">
 												</li>
-												<li><hr class="dropdown-divider"></li>
+												<li><a th:href="@{/cursos/detalhe(id=${curso.id})}"
+														class="btn dropdown-item" target="_blank" type="button">Ver na
+														Plataforma</a>
+												</li>
+												<li>
+													<hr class="dropdown-divider">
+												</li>
 												<li><a th:href="@{/colab/curso/editar(id=${curso.id})}"
 														class="btn dropdown-item" type="button">Editar</a></li>
-												<li><hr class="dropdown-divider"></li>
+												<li>
+													<hr class="dropdown-divider">
+												</li>
 												<li><a th:onclick="'confirmarDeletar(\'' + ${curso.id} + '\')'"
 														class="btn text-danger dropdown-item fw-semibold"
 														type="button">Excluir</a>
@@ -169,7 +170,7 @@
 		</div>
 	</div>
 	<footer class="row container-fluid footer">
-		<div class="col col-md-8">&reg; Empreenda + | 2023</div>
+		<div class="col col-md-8">&reg; Empreenda + | 2024</div>
 		<div class="col col-6 col-md-4 d-flex justify-content-end">Versão
 			- 3.0 (Spring)</div>
 	</footer>

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>ADM - Cadastro de Cliente</title>
+	<title>Admin - Cadastro de Cliente</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -42,7 +42,7 @@
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
 									<li><a class="dropdown-item" th:href="@{/admin/usuario/listar}">Listar</a></li>
-									<li><a class="dropdown-item" href="./CadastroUsuario.jsp">Cadastrar</a></li>
+									<li><a class="dropdown-item" th:href="@{/admin/usuario/save}">Cadastrar</a></li>
 								</ul>
 							</li>
 
@@ -52,9 +52,9 @@
 								</a>
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
-									<li><a class="dropdown-item" href="/Empreenda-Mais/ListarPostagensAdmin">Listar</a>
+									<li><a class="dropdown-item" th:href="@{/admin/postagem/lista}">Listar</a>
 									</li>
-									<li><a class="dropdown-item" href="./CadastroPostagem.jsp">Cadastrar</a></li>
+									<li><a class="dropdown-item" th:href="@{/admin/postagem/criar}">Cadastrar</a></li>
 								</ul>
 							</li>
 
@@ -64,8 +64,8 @@
 								</a>
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
-									<li><a class="dropdown-item" href="#">Listar</a></li>
-									<li><a class="dropdown-item" href="#">Cadastrar</a></li>
+									<li><a class="dropdown-item" th:href="@{/admin/curso/lista}">Listar</a></li>
+									<li><a class="dropdown-item" th:href="@{/admin/curso/cadastro}">Cadastrar</a></li>
 								</ul>
 							</li>
 
@@ -76,9 +76,13 @@
 								</a>
 								<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 									aria-labelledby="dropdown">
-									<li><a class="dropdown-item" href="#">Listar</a></li>
+									<li><a class="dropdown-item" th:href="@{/admin/inscricao/lista}">Listar</a></li>
 								</ul>
 							</li>
+							<li class="nav-item"><a th:href="@{/admin/suporte}"
+								class="nav-link"> <i class="fs-5 fas fa-headset"></i></i>
+									Suporte
+							</a></li>
 
 							<li class="nav-item"><a th:href="@{/}" class="nav-link" target="_blank"> <i
 										class="fas fa-external-link-alt"></i>
@@ -164,7 +168,7 @@
 		</div>
 	</div>
 	<footer class="row container-fluid footer">
-		<div class="col col-md-8">&reg; Empreenda + | 2023</div>
+		<div class="col col-md-8">&reg; Empreenda + | 2024</div>
 		<div class="col col-6 col-md-4 d-flex justify-content-end">Versão
 			- 3.0 (Spring)</div>
 	</footer>
