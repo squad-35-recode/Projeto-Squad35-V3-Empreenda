@@ -370,13 +370,14 @@
 							    <i class="fas fa-thumbs-up"></i>
 							    <span class="likeButtonText">Curtir</span>
 							</button>
-
-							
 							
 							<a th:href="@{/post/detalhe(id=${postagem.id})}" class="btn btn-light mx-2" title="Ver Detalhes">
 								<i class="far fa-comments"></i> Comentários (<span
 									th:text="${contagemComentarios[__${i.index}__]}"></span>)
 							</a>
+							<br>
+							<br>
+							<small sec:authorize="!isAuthenticated()" class="text-muted">Faça <a th:href="@{/login}">Login</a> para Curtir</small>
 
 							<div class="float-end mb-3">
 								<form th:action="@{/post/index/flag}" method="post">
