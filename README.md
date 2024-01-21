@@ -1,5 +1,6 @@
 # Projeto Empreenda + Squad 35
 <p>Versão 3 do projeto Empreenda +, utilizando o padrão de projeto MVC e as seguintes ferramentas: </p>
+<p><strong>Obs.: </strong>O banco de dados possui algumas configurações pontuais. Sugiro utilizar o dump dele ao invés do banco criado pelas classes do Spring.</p>
 
 ### Front e Back
 
