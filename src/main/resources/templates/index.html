@@ -36,6 +36,8 @@
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+
 	<title>Página Principal</title>
 
 	<script>
@@ -59,7 +61,7 @@
 				element.textContent = dataFormatada;
 			});
 		});
-		
+
 		window.onscroll = function () {
 			let botaoTopo = document.getElementById("botao-topo");
 			if (document.body.scrollTop > 20
@@ -76,6 +78,36 @@
 				behavior: 'smooth'
 			});
 		};
+
+		$(document).ready(function () {
+		    $('.likeButton').each(function () {
+		        var button = $(this);
+		        var postId = button.data('post-id');
+		        var isLiked = button.data('is-liked'); // Adicionamos um atributo 'data-is-liked' ao botão
+		
+		        var likeButtonText = button.find('.likeButtonText');
+		        if (isLiked) {
+		            likeButtonText.text('Curtido');
+		        } else {
+		            likeButtonText.text('Curtir');
+		        }
+		
+		        button.click(function () {
+		            $.post('/post/like', { postId: postId }, function (response) {
+		                alert(response.message);
+		
+		                if (response.liked) {
+		                    likeButtonText.text('Curtido');
+		                } else {
+		                    likeButtonText.text('Curtir');
+		                }
+		            });
+		        });
+		    });
+		
+		});
+
+
 	</script>
 
 
@@ -97,7 +129,8 @@
 								class="fas fa-home"></i>
 							Página Principal
 						</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/cursos/index}"> <i class="fas fa-book-open"></i> Cursos
+					<li class="nav-item"><a class="nav-link" th:href="@{/cursos/index}"> <i
+								class="fas fa-book-open"></i> Cursos
 						</a></li>
 					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/register}">
 							Cadastrar</a></li>
@@ -187,7 +220,7 @@
 				</button>
 			</div>
 		</section>
-		
+
 		<a href="#topo" id="botao-topo" title="Voltar ao Topo"> <i
 				class="fas fa-chevron-up text-primary fs-2 rounded-circle bg-light px-3 py-3 shadow-sm float-end position-fixed bottom-0 end-0 m-3"></i>
 		</a>
@@ -331,12 +364,16 @@
 								th:src="${postagem.mediaUrl}" alt="Img Postagem" class="img-fluid w-50 h-25 mx-50"
 								onerror="this.style.display='none';">
 						</div>
-
 						<div class="mb-3">
-							<input type="radio" class="btn-check" name="like" id="option1" autocomplete="off">
-							<label class="btn bg-primary text-light" for="option1"><i class="fas fa-thumbs-up"></i>
-								Gostei</label>
-							<a th:href="@{/post/detalhe(id=${postagem.id})}" class="btn btn-light" title="Ver Detalhes">
+							<button class="btn btn-md bg-primary text-light likeButton border border-0 rounded-start"
+							        th:data-post-id="${postagem.id}" th:data-is-liked="${postagensCurtidas[__${i.index}__]}">
+							    <i class="fas fa-thumbs-up"></i>
+							    <span class="likeButtonText">Curtir</span>
+							</button>
+
+							
+							
+							<a th:href="@{/post/detalhe(id=${postagem.id})}" class="btn btn-light mx-2" title="Ver Detalhes">
 								<i class="far fa-comments"></i> Comentários (<span
 									th:text="${contagemComentarios[__${i.index}__]}"></span>)
 							</a>

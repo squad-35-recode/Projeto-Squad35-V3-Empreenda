@@ -23,6 +23,7 @@ import br.com.empreenda.entity.Usuario;
 import br.com.empreenda.repository.AdicionaisPerfilRepository;
 import br.com.empreenda.repository.ComentariosPostagemRepository;
 import br.com.empreenda.repository.EnderecoPerfilRepository;
+import br.com.empreenda.repository.LikesPostagemRepository;
 import br.com.empreenda.repository.PerfilRepository;
 import br.com.empreenda.repository.PostagemRepository;
 import br.com.empreenda.repository.UsuarioRepository;
@@ -62,6 +63,9 @@ public class PerfilController {
 	
 	@Autowired
 	private ComentariosPostagemRepository comentariosPostagemRepository;
+	
+	@Autowired
+	private LikesPostagemRepository likesPostagemRepository;
 	
 	private final PasswordEncoder passwordEncoder;
 	
@@ -114,13 +118,18 @@ public class PerfilController {
 	    		
 	    		List<Integer> contagemComentarios = new ArrayList<>();
 	    		
+	    		List<Integer> contagemLikes = new ArrayList<>();
+	    		
 	    		for (Postagem postagem : postagens) {
 	    	        int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
 	    	        contagemComentarios.add(numeroComentarios);
+	    	        int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
+	    	        contagemLikes.add(numeroLikes);
 	    	    }
 	    		
 	    		model.addAttribute("postagens" ,postagens);
 	    		model.addAttribute("contagemComentarios", contagemComentarios);
+	    		model.addAttribute("contagemLikes", contagemLikes);
 	            model.addAttribute("adicionais", informacoesAdicionais);
 	            model.addAttribute("endereco", endereco);
 	            model.addAttribute("perfil", perfil);
@@ -266,13 +275,18 @@ public class PerfilController {
 		
 		List<Integer> contagemComentarios = new ArrayList<>();
 		
+		List<Integer> contagemLikes = new ArrayList<>();
+		
 		for (Postagem postagem : postagens) {
 	        int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
 	        contagemComentarios.add(numeroComentarios);
+	        int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
+	        contagemLikes.add(numeroLikes);
 	    }
 		
 		model.addAttribute("postagens" ,postagens);
 		model.addAttribute("contagemComentarios", contagemComentarios);
+		model.addAttribute("contagemLikes",contagemLikes);
 		model.addAttribute("endereco", endereco);
 		model.addAttribute("adicionais", adicionais);
 		model.addAttribute("perfil", perfil);

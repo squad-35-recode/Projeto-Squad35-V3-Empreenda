@@ -21,19 +21,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "likes_postagem")
 public class LikesPostagem {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
-    
+
     @ManyToOne
-    @JoinColumn(name = "postagem_id") 
+    @JoinColumn(name = "postagem_id")
     private Postagem postagem;
-	
-	
 	
 }

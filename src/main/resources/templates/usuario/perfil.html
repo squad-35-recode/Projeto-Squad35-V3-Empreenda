@@ -609,7 +609,7 @@
 								<div class="timeline-likes d-flex justify-content-between">
 									<div class="fs-4">
 										<i class="far fa-thumbs-up"></i>
-										</span> <span class="stats-total">0</span>
+										</span> <span class="stats-total" th:text="${contagemLikes[__${i.index}__]}"></span>
 									</div>
 									<div class="stats-right">
 										<a th:href="@{/post/detalhe(id=${postagem.id})}"

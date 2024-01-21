@@ -1,5 +1,6 @@
 package br.com.empreenda.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.empreenda.dto.UserDto;
+import br.com.empreenda.entity.LikesPostagem;
 import br.com.empreenda.entity.Postagem;
 import br.com.empreenda.entity.Usuario;
 import br.com.empreenda.repository.ComentariosPostagemRepository;
 import br.com.empreenda.repository.LikesPostagemRepository;
 import br.com.empreenda.repository.PostagemRepository;
+import br.com.empreenda.repository.UsuarioRepository;
 import br.com.empreenda.service.imp.PostagemServiceImp;
 import br.com.empreenda.service.imp.UserService;
 import br.com.empreenda.service.imp.UsuarioService;
@@ -36,9 +39,8 @@ public class AuthController {
 	@Autowired
 	private PostagemRepository postagemRepository;
 	
-	@SuppressWarnings("unused")
 	@Autowired
-	private LikesPostagemRepository likesPostagemRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	@SuppressWarnings("unused")
 	@Autowired
@@ -46,34 +48,74 @@ public class AuthController {
 	
 	@Autowired
 	private ComentariosPostagemRepository comentariosPostagemRepository;
+	
+	@Autowired
+	private LikesPostagemRepository likesPostagemRepository;
 
 	@GetMapping("/index")
-	public String home(Model model) {
-		List<Postagem> postagens = postagemRepository.findAllPostagensWithUserInfo();
-		List<Integer> contagemComentarios = new ArrayList<>();
-	    
-	    for (Postagem postagem : postagens) {
-	        int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
-	        contagemComentarios.add(numeroComentarios);
+	public String home(Model model, Principal principal) {
+	    List<Postagem> postagens = postagemRepository.findAllPostagensWithUserInfo();
+	    List<Integer> contagemComentarios = new ArrayList<>();
+	    List<Boolean> postagensCurtidas = new ArrayList<>();
+
+	    if (principal != null) {
+	        String username = principal.getName();
+	        Usuario usuario = usuarioRepository.findByEmail(username);
+
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+
+	            LikesPostagem existente = likesPostagemRepository.findByUsuarioAndPostagem(usuario, postagem);
+	            postagensCurtidas.add(existente != null);
+	        }
+	    } else {
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+	            postagensCurtidas.add(false);
+	        }
 	    }
-	    
-	    
+
 	    model.addAttribute("postagens", postagens);
 	    model.addAttribute("contagemComentarios", contagemComentarios);
+	    model.addAttribute("postagensCurtidas", postagensCurtidas);
+
 	    return "index";
 	}
+
 	
 	@GetMapping("/")
-	public String homeRoot(Model model) {
+	public String homeRoot(Model model, Principal principal) {
 		List<Postagem> postagens = postagemRepository.findAllPostagensWithUserInfo();
-		List<Integer> contagemComentarios = new ArrayList<>();
-	    
-	    for (Postagem postagem : postagens) {
-	        int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
-	        contagemComentarios.add(numeroComentarios);
+	    List<Integer> contagemComentarios = new ArrayList<>();
+	    List<Boolean> postagensCurtidas = new ArrayList<>();
+
+	    if (principal != null) {
+	        String username = principal.getName();
+	        Usuario usuario = usuarioRepository.findByEmail(username);
+
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+
+	            LikesPostagem existente = likesPostagemRepository.findByUsuarioAndPostagem(usuario, postagem);
+	            postagensCurtidas.add(existente != null);
+	        }
+	    } else {
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+	            postagensCurtidas.add(false);
+	        }
 	    }
+
 	    model.addAttribute("postagens", postagens);
 	    model.addAttribute("contagemComentarios", contagemComentarios);
+	    model.addAttribute("postagensCurtidas", postagensCurtidas);
+
 	    return "index";
 	}
 	

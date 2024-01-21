@@ -54,13 +54,13 @@ public class Postagem {
     @JoinColumn(name = "perfil_id")
     private Perfil perfil;
 	
-	@OneToMany(mappedBy = "postagem")
-    private List<LikesPostagem> likes;
-	
 	@OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
     private List<ComentariosPostagem> comentarios;
 	
-	public int contarLikes() {
+	@OneToMany(mappedBy = "postagem")
+    private List<LikesPostagem> likes;
+
+    public int contarLikes() {
         return (likes != null) ? likes.size() : 0;
     }
 

@@ -1,14 +1,16 @@
 package br.com.empreenda.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import br.com.empreenda.entity.LikesPostagem;
 import br.com.empreenda.entity.Postagem;
+import br.com.empreenda.entity.Usuario;
 
-@Repository
-public interface LikesPostagemRepository extends JpaRepository<LikesPostagem, Long>{ 
-	List<LikesPostagem> findByPostagem(Postagem postagem);
+public interface LikesPostagemRepository extends JpaRepository<LikesPostagem, Long> {
+
+	LikesPostagem findByUsuarioAndPostagem(Usuario usuario, Postagem postagem);
+	
+	int countByPostagem(Postagem postagem);
+	
+	int countByPostagemId(Long postId);
 }

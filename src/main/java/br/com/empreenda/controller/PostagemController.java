@@ -2,9 +2,12 @@ package br.com.empreenda.controller;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.empreenda.dto.LikeResponseDTO;
 import br.com.empreenda.entity.ComentariosPostagem;
+import br.com.empreenda.entity.LikesPostagem;
 import br.com.empreenda.entity.Perfil;
 import br.com.empreenda.entity.Postagem;
 import br.com.empreenda.entity.Usuario;
 import br.com.empreenda.repository.ComentariosPostagemRepository;
+import br.com.empreenda.repository.LikesPostagemRepository;
 import br.com.empreenda.repository.PerfilRepository;
 import br.com.empreenda.repository.PostagemRepository;
 import br.com.empreenda.repository.UsuarioRepository;
@@ -38,6 +44,9 @@ public class PostagemController {
 	
 	@Autowired
 	private ComentariosPostagemRepository comentariosPostagemRepository;
+	
+	@Autowired
+	private LikesPostagemRepository likesPostagemRepository;
 	
 	
     public PostagemController(PostagemService postagemService) {
@@ -77,7 +86,9 @@ public class PostagemController {
     	Long postIdLong = Long.valueOf(postId);
     	Postagem postagem = postagemRepository.findAllPostagensWithUserInfoById(postIdLong);
     	List<ComentariosPostagem> comentarios = comentariosPostagemRepository.findAllCommentsByPostWithUserInfoById(postagem);
+    	int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
         
+    	model.addAttribute("numeroLikes", numeroLikes);
     	model.addAttribute("comentarios",comentarios);
     	model.addAttribute("postagem", postagem);
         return "detalhePostagem.html"; 
@@ -137,5 +148,33 @@ public class PostagemController {
     	return modelAndView;
     }
     
+    @PostMapping("/post/like")
+    public ResponseEntity<LikeResponseDTO> darLike(@RequestParam("postId") Long postId, Principal principal) {
+        try {
+            String username = principal.getName();
+            Usuario usuario = usuarioRepository.findByEmail(username);
+            Long idUsuario = usuario.getId();
+
+            Postagem postagem = postagemRepository.getReferenceById(postId);
+
+            LikesPostagem existente = likesPostagemRepository.findByUsuarioAndPostagem(usuario, postagem);
+            if (existente == null) {
+                LikesPostagem novoLike = new LikesPostagem();
+                novoLike.setUsuario(usuario);
+                novoLike.setPostagem(postagem);
+                likesPostagemRepository.save(novoLike);
+
+                int totalLikes = likesPostagemRepository.countByPostagem(postagem); 
+                return new ResponseEntity<>(new LikeResponseDTO("Like adicionado com sucesso", true, totalLikes), HttpStatus.OK);
+            } else {
+                likesPostagemRepository.delete(existente);
+
+                int totalLikes = likesPostagemRepository.countByPostagem(postagem); 
+                return new ResponseEntity<>(new LikeResponseDTO("Like removido com sucesso", false, totalLikes), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new LikeResponseDTO("Erro ao processar o like", false, 0), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
 }

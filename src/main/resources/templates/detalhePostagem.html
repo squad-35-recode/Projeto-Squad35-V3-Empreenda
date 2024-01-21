@@ -47,6 +47,7 @@
 				element.textContent = dataFormatada;
 			});
 		});
+
 	</script>
 
 
@@ -152,11 +153,6 @@
 								<i class="fas fa-ellipsis-v"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-								<li><a class="dropdown-item" href="#"> <i class="far fa-bookmark"
-											style="margin-right: 5px;"></i>Salvar Post</a></li>
-								<li>
-									<hr class="dropdown-divider">
-								</li>
 								<li>
 									<form th:action="@{/post/details/flag}" method="post">
 										<input type="hidden" name="postId" th:value="${postagem.id}">
@@ -179,21 +175,8 @@
 					</div>
 
 					<ul class="nav nav-stack py-3 small">
-						<li class="nav-item">
-							<a class="nav-link active" href="#!"> <i class="far fa-thumbs-up"
-									style="margin-right: 5px;"></i>Curtidas (56)</a>
-						</li>
-						<li class="nav-item dropdown ms-sm-auto">
-							<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown"
-								aria-expanded="false">
-								Compartilhe <i class="fas fa-share" style="margin-left: 5px;"></i>
-							</a>
-							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
-								<li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copiar link
-										do post</a></li>
-								<li><a class="dropdown-item" href="#"> <i
-											class="bi bi-share fa-fw pe-2"></i>Compartilhar via …</a></li>
-							</ul>
+						<li class="nav-item text-primary">
+							<i class="far fa-thumbs-up" style="margin-right: 5px;"></i>Curtidas (<span th:text="${numeroLikes}"></span>)
 						</li>
 					</ul>
 
