@@ -1,5 +1,5 @@
 # Projeto Empreenda + Squad 35
-<p>Versão 3 do projeto Empreenda +, utilizando as seguintes ferramentas: </p>
+<p>Versão 3 do projeto Empreenda +, utilizando o padrão de projeto MVC e as seguintes ferramentas: </p>
 
 ### Front e Back
 
@@ -26,5 +26,9 @@
 - API .Net utilizando C#
 - Banco de Dados MySql
 
-
-### Estruturação e Estilização
+### Versionamento e Organização
+- Documentação com Google Docs
+- Figma com o sistema Kanban de organização
+- Versionamento com Git / GitHub
+- Apresentação com Apresentações Google
+- Modelagem do Banco de Dados com BrModelo
