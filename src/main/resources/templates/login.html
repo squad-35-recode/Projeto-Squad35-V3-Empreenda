@@ -49,8 +49,8 @@
 					</li>
 					<li><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
 				</ul>
-				<form class="d-flex">
-					<input class="form-control me-2" type="search" placeholder="Pesquisar Assunto" aria-label="Search">
+				<form class="d-flex" th:action="@{/post/pesquisa}" method="post">
+					<input class="form-control me-2" type="search" name="pesquisa" placeholder="Pesquisar Assunto" aria-label="Search">
 					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
 				</form>
 			</div>
@@ -63,7 +63,7 @@
 				<div class="row d-flex justify-content-center align-items-center h-100">
 					<div class="col-lg-8 col-xl-6">
 						<div class="card rounded-3">
-							<img src="./image/pessoas/negocio.jpg" class="w-100"
+							<img src="https://i.postimg.cc/WzR62pZq/negocio.jpg" class="w-100"
 								style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
 								alt="Sample photo">
 							<div class="card-body p-4 p-md-5">

@@ -142,7 +142,15 @@
 
 		<section class="container-full px-3 ">
 			<div class="row g-5">
-				<div class="col-md-8">
+				
+				<div class="col-md-8" th:if="${#lists.isEmpty(cursos)}">
+					<h3 class="pb-4 mb-4 fst-italic border-bottom" id="cursosDisp">
+						Ainda não há cursos disponíveis nessa categoria. Fique ligado!
+					</h3>
+					<a th:href="@{/cursos/index}" class="btn btn-primary btn-lg">Ver todos os Cursos</a>
+				</div>
+				
+				<div class="col-md-8" th:unless="${#lists.isEmpty(cursos)}">
 					<h3 class="pb-4 mb-4 fst-italic border-bottom" id="cursosDisp">
 						Cursos Disponíveis
 					</h3>
@@ -184,8 +192,8 @@
 						<div class="p-4">
 							<h4 class="fst-italic">Parceiros</h4>
 							<ol class="list-unstyled">
-								<li><a href="https://sebrae.com.br/sites/PortalSebrae/" target="_blank">SEBRAE</a></li>
-								<li><a href="https://www.cursoemvideo.com" target="_blank">Curso em Vídeo</a></li>
+								<li><a href="#">SEBRAE</a></li>
+								<li><a href="#">Curso em Vídeo</a></li>
 								<li><a href="#">Canais Diversos</a></li>
 							</ol>
 						</div>

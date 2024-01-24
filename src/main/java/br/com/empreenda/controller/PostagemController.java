@@ -177,4 +177,37 @@ public class PostagemController {
         }
     }
     
+    @PostMapping("/post/pesquisa")
+    public String pesquisaPostagem(@RequestParam("pesquisa") String pesquisa, Model model, Principal principal) {
+    	List<Postagem> postagens = postagemRepository.findByTituloContaining(pesquisa);
+    	List<Integer> contagemComentarios = new ArrayList<>();
+	    List<Boolean> postagensCurtidas = new ArrayList<>();
+
+	    if (principal != null) {
+	        String username = principal.getName();
+	        Usuario usuario = usuarioRepository.findByEmail(username);
+
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+
+	            LikesPostagem existente = likesPostagemRepository.findByUsuarioAndPostagem(usuario, postagem);
+	            postagensCurtidas.add(existente != null);
+	        }
+	    } else {
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+	            postagensCurtidas.add(false);
+	        }
+	    }
+    	
+    	model.addAttribute("pesquisa",pesquisa);
+    	model.addAttribute("postagens", postagens);
+    	model.addAttribute("contagemComentarios", contagemComentarios);
+	    model.addAttribute("postagensCurtidas", postagensCurtidas);
+    	return "pesquisa.html";
+    }
+    
 }

@@ -33,4 +33,7 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 	 List<Postagem> findAllPostagensWithUserInfoByIdPerfil(@Param("perfilId") Long perfilId);
 	
 	Postagem findByPerfil(Perfil perfil);
+	
+	List<Postagem> findByTituloContaining(String postagem);
+	
 }

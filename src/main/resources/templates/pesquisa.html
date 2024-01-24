@@ -22,7 +22,7 @@
 	<script src="https://cdn.tiny.cloud/1/8svz9148gua03293my7b0e5drfls3zdv5h5b52vt4dbntdgt/tinymce/6/tinymce.min.js"
 		referrerpolicy="origin"></script>
 
-	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="/css/style.css">
 
 	<style>
 		iframe,
@@ -38,7 +38,7 @@
 
 
 
-	<title>Página Principal</title>
+	<title th:text="'Pesquisa: ' + ${pesquisa}"></title>
 
 	<script>
 		tinymce
@@ -195,16 +195,16 @@
 				<div class="carousel-inner">
 					<div class="carousel-item active">
 						<a href="https://www.cursoemvideo.com/" target="_blank"><img
-								src="./image/cursos-gratuito-em-video.png" class="d-block w-100"
+								src="/image/cursos-gratuito-em-video.png" class="d-block w-100"
 								alt="mais de 100 cursos gratuitos no sebrae"></a>
 					</div>
 					<div class="carousel-item">
 						<a href="https://www.sebrae.com.br/sites/PortalSebrae/cursoseeventoseducacao?uf=SP"
-							target="_blank"><img src="./image/mais-de-100-cursos-gratuitos-sebrae.png"
+							target="_blank"><img src="/image/mais-de-100-cursos-gratuitos-sebrae.png"
 								class="d-block w-100" alt="desenhos de personagens estudando"></a>
 					</div>
 					<div class="carousel-item">
-						<img src="./image/desenhos-de-personagens-estudando.png" class="d-block w-100"
+						<img src="/image/desenhos-de-personagens-estudando.png" class="d-block w-100"
 							alt="cursos gratuitos em vídeo">
 					</div>
 				</div>
@@ -308,30 +308,20 @@
 				<div class="container">
 					<div class="row">
 						<h3 class="text-center">Feed</h3>
-					</div>
-					<div class="row d-flex justify-content-end">
-						<div class="dropdown d-flex justify-content-end">
-							<button class="btn dropdown-toggle menuCategoria" type="button" id="dropdownMenuButton1"
-								data-bs-toggle="dropdown" aria-expanded="false">Filtrar Categoria</button>
-							<ul class="dropdown-menu px-2 corpoMenuCategoria" aria-labelledby="dropdownMenuButton1">
-								<li><a class="dropdown-item bg-primary text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Vagas</a></li>
-								<li><a class="dropdown-item bg-success text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Cursos</a></li>
-								<li><a class="dropdown-item bg-warning text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Dúvidas</a></li>
-								<li><a class="dropdown-item bg-info text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Dicas</a></li>
-							</ul>
-						</div>
+						<h4>Resultados para: <span class="text-muted" th:text="${pesquisa}"></span></h4>
 					</div>
 				</div>
-				<!-- Área de Posts -->
-				<section>
-					<!-- Postagens -->
+				
+				<section class="my-5" th:if="${#lists.isEmpty(postagens)}">
+					<h2 class="text-primary text-center">Resultado não encontrado</h2>
+					<div class="d-flex justify-content-center my-3">
+						<a th:href="@{/}" class="btn btn-primary btn-lg text-center">Voltar</a>
+					</div>
+				</section>
+				
+				<section th:unless="${#lists.isEmpty(postagens)}">
 					<div th:each="postagem, i : ${postagens}" class="container my-3 border rounded bg-white">
 						<div class="headerPost mb-3 p-3 row row-cols-auto">
-							<!-- Perfil do Usuário -->
 							<div class="col float-start mb-3">
 								<a class="" th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}">
 									<img th:src="${postagem.perfil.fotoUrl}" alt="Foto de perfil" id="imgPerfilFeed"
@@ -339,7 +329,6 @@
 								</a>
 
 							</div>
-							<!-- Informações do Usuário -->
 							<div class="col py-4">
 								<a th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}" id="nomeUsuario"><span
 										th:text="${postagem.perfil.usuario.nome}"></span></a> <br> <span
@@ -398,7 +387,7 @@
 				<section class="my-3 border rounded p-3 bg-white">
 					<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>
 					<div id="bannerDivulgação">
-						<img src="./image/ads-itau.jpg" alt="" class="img-fluid">
+						<img src="https://pbs.twimg.com/media/FJTkzrUXEAcQDB0.jpg" alt="" class="img-fluid">
 					</div>
 				</section>
 

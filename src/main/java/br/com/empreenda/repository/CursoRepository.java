@@ -20,4 +20,6 @@ public interface CursoRepository extends JpaRepository<Curso, Long	>{
 	           "INNER JOIN pu.usuario u " +
 	           "WHERE c.id = :cursoId")
     Curso findCursoDetails(@Param("cursoId") Long cursoId);
+	
+	List<Curso> findByCategoria(String categoria);
 }
