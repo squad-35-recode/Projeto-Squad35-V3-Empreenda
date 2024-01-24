@@ -22,7 +22,7 @@
 	<script src="https://cdn.tiny.cloud/1/8svz9148gua03293my7b0e5drfls3zdv5h5b52vt4dbntdgt/tinymce/6/tinymce.min.js"
 		referrerpolicy="origin"></script>
 
-	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="/css/style.css">
 
 	<style>
 		iframe,
@@ -137,9 +137,6 @@
 					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
 							Entrar</a></li>
 					<li sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
-					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
-								class="fas fa-envelope"></i> Mensagens
-						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
 							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
 						</a></li>
@@ -195,16 +192,16 @@
 				<div class="carousel-inner">
 					<div class="carousel-item active">
 						<a href="https://www.cursoemvideo.com/" target="_blank"><img
-								src="./image/cursos-gratuito-em-video.png" class="d-block w-100"
+								src="/image/cursos-gratuito-em-video.png" class="d-block w-100"
 								alt="mais de 100 cursos gratuitos no sebrae"></a>
 					</div>
 					<div class="carousel-item">
 						<a href="https://www.sebrae.com.br/sites/PortalSebrae/cursoseeventoseducacao?uf=SP"
-							target="_blank"><img src="./image/mais-de-100-cursos-gratuitos-sebrae.png"
+							target="_blank"><img src="/image/mais-de-100-cursos-gratuitos-sebrae.png"
 								class="d-block w-100" alt="desenhos de personagens estudando"></a>
 					</div>
 					<div class="carousel-item">
-						<img src="./image/desenhos-de-personagens-estudando.png" class="d-block w-100"
+						<img src="/image/desenhos-de-personagens-estudando.png" class="d-block w-100"
 							alt="cursos gratuitos em vídeo">
 					</div>
 				</div>
@@ -314,23 +311,31 @@
 							<button class="btn dropdown-toggle menuCategoria" type="button" id="dropdownMenuButton1"
 								data-bs-toggle="dropdown" aria-expanded="false">Filtrar Categoria</button>
 							<ul class="dropdown-menu px-2 corpoMenuCategoria" aria-labelledby="dropdownMenuButton1">
-								<li><a class="dropdown-item bg-primary text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Vagas</a></li>
-								<li><a class="dropdown-item bg-success text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Cursos</a></li>
-								<li><a class="dropdown-item bg-warning text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Dúvidas</a></li>
-								<li><a class="dropdown-item bg-info text-light rounded text-center mt-1 btnCategoria pt-0"
-										href="#">Dicas</a></li>
+								<li><a class="dropdown-item rounded text-center mt-1 pt-0"
+										th:href="@{/index/filtrar?categoria=Cursos}">Cursos</a></li>
+								<li><a class="dropdown-item rounded text-center mt-1 pt-0"
+										th:href="@{/index/filtrar?categoria=Vagas}">Vagas</a></li>
+								<li><a class="dropdown-item rounded text-center mt-1 pt-0"
+										th:href="@{/index/filtrar?categoria=Dúvidas}">Perguntas</a></li>
+								<li><a class="dropdown-item rounded text-center mt-1 pt-0"
+										th:href="@{/index/filtrar?categoria=Dicas}">Dicas</a></li>
+										<li><a class="dropdown-item rounded text-center mt-1 pt-0"
+										th:href="@{/index/filtrar?categoria=Outros}">Outros</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 				<!-- Área de Posts -->
-				<section>
-					<!-- Postagens -->
+				<section th:if="${#lists.isEmpty(postagens)}" class="mb-3">
+					<h2 class="text-muted">Não foram encontradas nenhuma postagem com esse filtro. Aproveite e seja o primeiro a compartilhar!</h2>
+					<div class="d-flex justify-content-center">
+							<a th:href="@{/index}" class="btn btn-primary btn-lg p-3">Voltar</a>
+						</div>
+				</section>
+				
+				<section th:unless="${#lists.isEmpty(postagens)}">
 					<div th:each="postagem, i : ${postagens}" class="container my-3 border rounded bg-white">
-						<div class="headerPost mb-3 p-3 row row-cols-auto">
+						<div class="mb-3 p-3 row row-cols-auto">
 							<!-- Perfil do Usuário -->
 							<div class="col float-start mb-3">
 								<a class="" th:href="@{/perfil/details(perfilId=${postagem.perfil.id})}">
@@ -352,6 +357,7 @@
 							</div>
 							<div class="col-1"></div>
 						</div>
+						<hr>
 						<div class="mb-3">
 							<label for="inputTituloPostagem" class="form-label fs-4"
 								th:text="${postagem.titulo}"></label>
@@ -375,10 +381,6 @@
 								<i class="far fa-comments"></i> Comentários (<span
 									th:text="${contagemComentarios[__${i.index}__]}"></span>)
 							</a>
-							<br>
-							<br>
-							<small sec:authorize="!isAuthenticated()" class="text-muted">Faça <a th:href="@{/login}">Login</a> para Curtir</small>
-
 							<div class="float-end mb-3">
 								<form th:action="@{/post/index/flag}" method="post">
 									<input type="hidden" name="id" th:value="${postagem.id}">
@@ -388,6 +390,11 @@
 									</button>
 								</form>
 							</div>
+							<br>
+							<br>
+							<small sec:authorize="!isAuthenticated()" class="text-muted">Faça <a th:href="@{/login}">Login</a> para Curtir</small>
+
+							
 						</div>
 					</div>
 				</section>
@@ -398,7 +405,7 @@
 				<section class="my-3 border rounded p-3 bg-white">
 					<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>
 					<div id="bannerDivulgação">
-						<img src="./image/ads-itau.jpg" alt="" class="img-fluid">
+						<img src="/image/ads-itau.jpg" alt="" class="img-fluid">
 					</div>
 				</section>
 

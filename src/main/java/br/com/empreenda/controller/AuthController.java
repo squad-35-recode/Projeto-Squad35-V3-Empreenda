@@ -119,6 +119,39 @@ public class AuthController {
 	    return "index";
 	}
 	
+	@GetMapping("/index/filtrar")
+	public String homeFiltrada(@RequestParam("categoria")String categoria,Model model, Principal principal) {
+		List<Postagem> postagens = postagemRepository.findByCategoria(categoria);
+	    List<Integer> contagemComentarios = new ArrayList<>();
+	    List<Boolean> postagensCurtidas = new ArrayList<>();
+
+	    if (principal != null) {
+	        String username = principal.getName();
+	        Usuario usuario = usuarioRepository.findByEmail(username);
+
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            int numeroLikes = likesPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+
+	            LikesPostagem existente = likesPostagemRepository.findByUsuarioAndPostagem(usuario, postagem);
+	            postagensCurtidas.add(existente != null);
+	        }
+	    } else {
+	        for (Postagem postagem : postagens) {
+	            int numeroComentarios = comentariosPostagemRepository.countByPostagemId(postagem.getId());
+	            contagemComentarios.add(numeroComentarios);
+	            postagensCurtidas.add(false);
+	        }
+	    }
+
+	    model.addAttribute("postagens", postagens);
+	    model.addAttribute("contagemComentarios", contagemComentarios);
+	    model.addAttribute("postagensCurtidas", postagensCurtidas);
+
+	    return "index";
+	}
+	
 	@GetMapping("/login")
 	public String showLoginForm(Model model) {
 		UserDto usuario = new UserDto();

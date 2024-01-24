@@ -92,9 +92,6 @@
 							Cadastrar</a></li>
 					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
 							Entrar</a></li>
-					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
-								class="fas fa-envelope"></i> Mensagens
-						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link"
 							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
 						</a></li>

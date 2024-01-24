@@ -36,4 +36,6 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 	
 	List<Postagem> findByTituloContaining(String postagem);
 	
+	List<Postagem> findByCategoria(String categoria);
+	
 }

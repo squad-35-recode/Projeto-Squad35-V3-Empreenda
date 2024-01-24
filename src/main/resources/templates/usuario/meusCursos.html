@@ -81,9 +81,6 @@
 					<li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">
 							Entrar</a></li>
 					<li sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
-					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" href="#"> <i
-								class="fas fa-envelope"></i> Mensagens
-						</a></li>
 					<li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link active"
 							th:href="@{/cursos/usuario}"> <i class="fas fa-book-reader"></i> Meus Cursos
 						</a></li>
@@ -134,7 +131,15 @@
 				<main>
 					<h1> <i class="fas fa-book-open px-3 py-4"> </i>Lista de Inscrições</h1>
 
-					<div class="row">
+					<div class="row" th:if="${#lists.isEmpty(inscricoes)}">
+						<h2 class="text-muted">Parece que você ainda não se inscreveu em nenhum curso. Não perca tempo, aproveite!</h2>
+						<div class="d-flex justify-content-center">
+							<a th:href="@{/cursos/index}" class="btn btn-primary btn-lg p-3">Ver Cursos</a>
+						</div>
+						
+					</div>
+
+					<div class="row" th:unless="${#lists.isEmpty(inscricoes)}">
 						<div class="col-sm-6 mt-2" th:each="inscricao : ${inscricoes}">
 							<div class="card">
 								<div class="card-body" >
