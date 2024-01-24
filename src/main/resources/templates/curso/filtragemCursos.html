@@ -92,15 +92,14 @@
 					<div class="col text-center">
 						<h1 class="text-dark text-center tituloCursos"> <i class="fas fa-book-open px-3"></i>Cursos</h1>
 					</div>
-					<div class="col">
+					<div class="col col-lg-3">
 						<div class="input-group">
-							<input class="form-control border-end-0 border" type="search" value="Pesquisar"
-								id="pesquisaCursos">
-							<span class="input-group-append">
-								<button class="btn bg-white border-start-0 border-bottom-0 border ms-n5" type="button">
-									<i class="fa fa-search"></i>
-								</button>
-							</span>
+							<form th:action="@{/cursos/pesquisa}">
+								<div class="input-group mb-3">
+									  <input type="text" class="form-control" id="pesquisaCursos" name="pesquisa" placeholder="Pesquisar" aria-label="Pesquisar Curso" aria-describedby="button-addon2">
+									  <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fa fa-search"></i></button>
+									</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -142,7 +141,7 @@
 				
 				<div class="col-md-8" th:if="${#lists.isEmpty(cursos)}">
 					<h3 class="pb-4 mb-4 fst-italic border-bottom" id="cursosDisp">
-						Ainda não há cursos disponíveis nessa categoria. Fique ligado!
+						Ainda não há cursos disponíveis nessa categoria ou pesquisa. Mas fique ligado!
 					</h3>
 					<a th:href="@{/cursos/index}" class="btn btn-primary btn-lg">Ver todos os Cursos</a>
 				</div>

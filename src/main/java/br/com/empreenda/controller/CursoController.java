@@ -129,6 +129,14 @@ public class CursoController {
 		return "curso/filtragemCursos.html";
 	}
 	
+	@GetMapping("/cursos/pesquisa")
+	public String pesquisaCursos(@RequestParam("pesquisa") String pesquisa, Model model) {
+		List<Curso> cursos = cursoRepository.findByTituloContaining(pesquisa);
+		
+		model.addAttribute("cursos",cursos);
+		return "curso/filtragemCursos.html";
+	}
+	
 	
 	@GetMapping("/usuario/curso/cancelar")
 	public String cancelarInscricao(@RequestParam("id")Long id, Model model) {

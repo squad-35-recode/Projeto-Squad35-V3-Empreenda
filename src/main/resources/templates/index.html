@@ -80,31 +80,40 @@
 		};
 
 		$(document).ready(function () {
-		    $('.likeButton').each(function () {
-		        var button = $(this);
-		        var postId = button.data('post-id');
-		        var isLiked = button.data('is-liked'); // Adicionamos um atributo 'data-is-liked' ao botão
-		
-		        var likeButtonText = button.find('.likeButtonText');
-		        if (isLiked) {
-		            likeButtonText.text('Curtido');
-		        } else {
-		            likeButtonText.text('Curtir');
-		        }
-		
-		        button.click(function () {
-		            $.post('/post/like', { postId: postId }, function (response) {
-		                alert(response.message);
-		
-		                if (response.liked) {
-		                    likeButtonText.text('Curtido');
-		                } else {
-		                    likeButtonText.text('Curtir');
-		                }
-		            });
-		        });
-		    });
-		
+			$('.likeButton').each(function () {
+				var button = $(this);
+				var postId = button.data('post-id');
+				var isLiked = button.data('is-liked'); // Adicionamos um atributo 'data-is-liked' ao botão
+
+				var likeButtonText = button.find('.likeButtonText');
+				if (isLiked) {
+					likeButtonText.text('Curtido');
+				} else {
+					likeButtonText.text('Curtir');
+				}
+
+				button.click(function () {
+					$.post('/post/like', {postId: postId}, function (response) {
+						alert(response.message);
+
+						if (response.liked) {
+							likeButtonText.text('Curtido');
+						} else {
+							likeButtonText.text('Curtir');
+						}
+					});
+				});
+			});
+
+		});
+
+		document.getElementById('categoria').addEventListener('change', function () {
+			var categoriaError = document.getElementById('categoriaError');
+			if (this.value === "") {
+				categoriaError.textContent = "Por favor, selecione uma categoria.";
+			} else {
+				categoriaError.textContent = "";
+			}
 		});
 
 
@@ -170,7 +179,8 @@
 						</a></li>
 				</ul>
 				<form class="d-flex" th:action="@{/post/pesquisa}" method="post">
-					<input class="form-control me-2" type="search" name="pesquisa" placeholder="Pesquisar Assunto" aria-label="Search">
+					<input class="form-control me-2" type="search" name="pesquisa" placeholder="Pesquisar Assunto"
+						aria-label="Search">
 					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
 				</form>
 			</div>
@@ -269,14 +279,16 @@
 											placeholder="Título da Postagem (*)">
 									</div>
 									<div class="col-4">
-										<select name="categoria" required class="form-select form-select-sm py-1">
-											<option selected disabled>Categoria (*)</option>
+										<label for="categoria">
+											Categoria (*): </label>
+										<select name="categoria" id="categoria" class="form-select form-select-sm py-1">
 											<option value="Cursos">Cursos</option>
 											<option value="Vagas">Vagas</option>
 											<option value="Perguntas">Perguntas</option>
 											<option value="Dicas">Dicas</option>
-											<option value="Outros">Outros</option>
+											<option value="Outros" selected>Outros</option>
 										</select>
+										<div id="categoriaError" class="text-danger"></div>
 									</div>
 								</div>
 
@@ -319,7 +331,7 @@
 										th:href="@{/index/filtrar?categoria=Dúvidas}">Perguntas</a></li>
 								<li><a class="dropdown-item rounded text-center mt-1 pt-0"
 										th:href="@{/index/filtrar?categoria=Dicas}">Dicas</a></li>
-										<li><a class="dropdown-item rounded text-center mt-1 pt-0"
+								<li><a class="dropdown-item rounded text-center mt-1 pt-0"
 										th:href="@{/index/filtrar?categoria=Outros}">Outros</a></li>
 							</ul>
 						</div>
@@ -327,12 +339,13 @@
 				</div>
 				<!-- Área de Posts -->
 				<section th:if="${#lists.isEmpty(postagens)}" class="mb-3">
-					<h2 class="text-muted">Não foram encontradas nenhuma postagem com esse filtro. Aproveite e seja o primeiro a compartilhar!</h2>
+					<h2 class="text-muted">Não foram encontradas nenhuma postagem com esse filtro. Aproveite e seja o
+						primeiro a compartilhar!</h2>
 					<div class="d-flex justify-content-center">
-							<a th:href="@{/index}" class="btn btn-primary btn-lg p-3">Voltar</a>
-						</div>
+						<a th:href="@{/index}" class="btn btn-primary btn-lg p-3">Voltar</a>
+					</div>
 				</section>
-				
+
 				<section th:unless="${#lists.isEmpty(postagens)}">
 					<div th:each="postagem, i : ${postagens}" class="container my-3 border rounded bg-white">
 						<div class="mb-3 p-3 row row-cols-auto">
@@ -372,12 +385,14 @@
 						</div>
 						<div class="mb-3">
 							<button class="btn btn-md bg-primary text-light likeButton border border-0 rounded-start"
-							        th:data-post-id="${postagem.id}" th:data-is-liked="${postagensCurtidas[__${i.index}__]}">
-							    <i class="fas fa-thumbs-up"></i>
-							    <span class="likeButtonText">Curtir</span>
+								th:data-post-id="${postagem.id}"
+								th:data-is-liked="${postagensCurtidas[__${i.index}__]}">
+								<i class="fas fa-thumbs-up"></i>
+								<span class="likeButtonText">Curtir</span>
 							</button>
-							
-							<a th:href="@{/post/detalhe(id=${postagem.id})}" class="btn btn-light mx-2" title="Ver Detalhes">
+
+							<a th:href="@{/post/detalhe(id=${postagem.id})}" class="btn btn-light mx-2"
+								title="Ver Detalhes">
 								<i class="far fa-comments"></i> Comentários (<span
 									th:text="${contagemComentarios[__${i.index}__]}"></span>)
 							</a>
@@ -392,9 +407,10 @@
 							</div>
 							<br>
 							<br>
-							<small sec:authorize="!isAuthenticated()" class="text-muted">Faça <a th:href="@{/login}">Login</a> para Curtir</small>
+							<small sec:authorize="!isAuthenticated()" class="text-muted">Faça <a
+									th:href="@{/login}">Login</a> para Curtir</small>
 
-							
+
 						</div>
 					</div>
 				</section>

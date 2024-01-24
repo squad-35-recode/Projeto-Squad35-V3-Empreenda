@@ -22,4 +22,6 @@ public interface CursoRepository extends JpaRepository<Curso, Long	>{
     Curso findCursoDetails(@Param("cursoId") Long cursoId);
 	
 	List<Curso> findByCategoria(String categoria);
+	
+	List<Curso> findByTituloContaining(String titulo);
 }

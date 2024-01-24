@@ -19,6 +19,56 @@
 
 	<link rel="stylesheet" href="./css/style.css">
 
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#verificarForm").submit(function (e) {
+				e.preventDefault();
+
+				var email = $("input[name='email']").val();
+
+				$.ajax({
+					type: "POST",
+					url: "/login/esqueciSenha",
+					data: {email: email},
+					success: function (response) {
+						if (response.usuarioExiste) {
+							$("#mensagemTrocarSenha").html("");
+							$("#verificarForm").hide();
+							$("#trocarSenhaForm").show();
+						} else {
+							$("#mensagemTrocarSenha").html("<p class='text-danger'>Usuário não encontrado.</p>");
+						}
+					},
+					error: function () {
+						$("#mensagemTrocarSenha").html("<p class='text-danger'>Erro ao processar a solicitação.</p>");
+					}
+				});
+			});
+
+			$("#trocarSenhaForm").submit(function (e) {
+				e.preventDefault();
+
+				var senha = $("input[name='senha']").val();
+				var email = $("input[name='email']").val(); // Adicionando o e-mail ao envio
+
+				$.ajax({
+					type: "POST",
+					url: "/login/esqueciSenha",
+					data: {senha: senha, email: email}, // Enviando tanto senha quanto e-mail
+					success: function (response) {
+						$("#mensagemTrocarSenha").html("<p class='text-success'>Senha alterada com sucesso!</p>");
+					},
+					error: function () {
+						$("#mensagemTrocarSenha").html("<p class='text-danger'>Erro ao trocar a senha.</p>");
+					}
+				});
+			});
+		});
+
+	</script>
+
+
 	<title>Emprenda + | Login</title>
 </head>
 
@@ -50,7 +100,8 @@
 					<li><a class="nav-link" th:href="@{/ajuda}">Ajuda</a></li>
 				</ul>
 				<form class="d-flex" th:action="@{/post/pesquisa}" method="post">
-					<input class="form-control me-2" type="search" name="pesquisa" placeholder="Pesquisar Assunto" aria-label="Search">
+					<input class="form-control me-2" type="search" name="pesquisa" placeholder="Pesquisar Assunto"
+						aria-label="Search">
 					<button class="btn btn-outline-light" type="submit">Pesquisar</button>
 				</form>
 			</div>
@@ -76,9 +127,17 @@
 											aria-label="Close"></button>
 									</div>
 								</div>
+								<div th:if="${param.senhaSuccess}">
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										<i class="fas fa-info-circle fs-4 mx-1"></i> Senha alterada com sucesso!
+										<button type="button" class="btn-close" data-bs-dismiss="alert"
+											aria-label="Close"></button>
+									</div>
+								</div>
 								<div th:if="${param.errorInput}">
 									<div class="alert alert-danger alert-dismissible fade show" role="alert">
-										<i class="fas fa-info-circle fs-4 mx-1"></i> Algum dado de cadastro com erro! Preencha novamente.
+										<i class="fas fa-info-circle fs-4 mx-1"></i> Algum dado de cadastro com erro!
+										Preencha novamente.
 										<button type="button" class="btn-close" data-bs-dismiss="alert"
 											aria-label="Close"></button>
 									</div>
@@ -128,10 +187,9 @@
 										id="loginIncorreto"></div>
 									<div class="my-4 text-center">
 										<button type="submit" class="btn btn-success btn-lg mb-1 mx-3">Entrar</button>
-										<button type="button" class="btn btn-lg btn-light">Esqueci minha senha</button>
 									</div>
 									<div>
-										<span>Ainda não é cadastrado? </span> <a href="cadastro.html">Cadastre-se</a>
+										<span>Ainda não é cadastrado? </span> <a th:href="@{/register}">Cadastre-se</a>
 									</div>
 								</form>
 								<form th:action="@{/register/colab/save}" th:object="${usuario}" method="post">
@@ -180,6 +238,7 @@
 				</div>
 			</div>
 		</section>
+
 		<section class="container d-flex justify-content-around">
 			<div class="my-3 border rounded p-3 bg-white d-flex w-50 h-50">
 				<div class="text-muted border rounded position-absolute bg-white mx-1 mt-1" id="tagAds">Ads</div>

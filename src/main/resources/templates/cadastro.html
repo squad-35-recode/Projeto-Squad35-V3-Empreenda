@@ -167,7 +167,7 @@
 											onclick="limparCampos()">Limpar Campos</button>
 									</div>
 									<div>
-										<span>Já tem uma conta? </span> <a href="login.html">Faça Login</a>
+										<span>Já tem uma conta? </span> <a th:href="@{/login}">Faça Login</a>
 									</div>
 								</form>
 								<form th:action="@{/register/colab/save}" th:object="${usuario}" method="post">
