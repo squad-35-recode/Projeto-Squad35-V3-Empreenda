@@ -24,8 +24,11 @@
   </br>
   
 ### Back-End
-- API .Net utilizando C#
+- Java
 - Banco de Dados MySql
+
+### Linguagem Assíncrona
+- Ajax
 
 ### Versionamento e Organização
 - Documentação com Google Docs
@@ -33,3 +36,4 @@
 - Versionamento com Git / GitHub
 - Apresentação com Apresentações Google
 - Modelagem do Banco de Dados com BrModelo
+- Modelagem do diagrama de classes com o Astah Community 
