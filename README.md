@@ -36,4 +36,5 @@
 - Versionamento com Git / GitHub
 - Apresentação com Apresentações Google
 - Modelagem do Banco de Dados com BrModelo
-- Modelagem do diagrama de classes com o Astah Community 
+- Modelagem do diagrama de classes com o Astah Community
+- Diagrama de Casos de uso com LucidChart
